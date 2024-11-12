@@ -7,7 +7,7 @@
 מטרת המשחק היא לשפר את יכולות הריכוז, הזיכרון והתגובה של השחקן באמצעות משימות דינאמיות 
 
 ## קישור לדף עם הרכיבים הרשמיים
-](https://github.com/UniversityGameProject-2024/Diamond-Quest/wiki)
+(https://github.com/UniversityGameProject-2024/Diamond-Quest/wiki)
 ## חברי צוות
 ניקיטה אנוסוב
 
