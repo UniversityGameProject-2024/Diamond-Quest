@@ -14,6 +14,9 @@ public class Fruit : MonoBehaviour
     private Rigidbody fruitRigidbody;
     private Collider fruitCollider;
 
+    [SerializeField]
+    private string fruitColor; // The color of this fruit
+
     private void Awake()
     {
         // Cache references to the Rigidbody and Collider components for optimization
@@ -24,7 +27,20 @@ public class Fruit : MonoBehaviour
     private void Slice(Vector3 direction, Vector3 position, float force)
     {
         // Increment the player's score through the ScoreManager
-        FindFirstObjectByType<ScoreManager>().IncreasingScore();
+        //FindFirstObjectByType<ScoreManager>().IncreasingScore();
+
+        // Notify the TargetFruits manager
+        TargetFruits targetFruitsManager = FindObjectOfType<TargetFruits>();
+        if (targetFruitsManager.CheckTarget(fruitColor))
+        {
+            // Increase the score only if the correct fruit is sliced
+            FindFirstObjectByType<ScoreManager>().IncreasingScore();
+        }
+        else
+        {
+            Debug.Log("Wrong fruit sliced!");
+            FindFirstObjectByType<ScoreManager>().Explode();
+        }
 
         // Disable the whole fruit and enable the sliced version
         whole.SetActive(false);
