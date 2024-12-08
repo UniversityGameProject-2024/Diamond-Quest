@@ -5,9 +5,9 @@ public class TargetFruits : MonoBehaviour
 {
     [Tooltip("Text to display the target fruits")]
     [SerializeField] private TextMeshProUGUI targetFruitsText;
-
-    [Tooltip("Available fruit names (matching prefab names)")]
+    [Tooltip("Fruits colors")]
     [SerializeField] private string[] fruitColors;
+    [Tooltip("How many colors desplay")]
     [SerializeField] private int FruitOrderAmount = 3;
     private string[] currentTargets; // The current sequence of target fruits
     private int currentTargetIndex;  // The current fruit in the sequence
