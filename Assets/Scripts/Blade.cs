@@ -29,8 +29,8 @@ public class Blade : MonoBehaviour
     private void Awake()
     {
         // Initialize references to the blade's collider and the main camera
-        bladeColider = GetComponent<Collider>();
         mainCamera = Camera.main;
+        bladeColider = GetComponent<Collider>();
         bladeTrail = GetComponentInChildren<TrailRenderer>();
     }
 
@@ -66,7 +66,7 @@ public class Blade : MonoBehaviour
     private void StartSlicing()
     {
         // Convert mouse position to world position and set the blade's initial position
-        Vector3 newPosition = mainCamera.ScreenToViewportPoint(Input.mousePosition);
+        Vector3 newPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         newPosition.z = 0f;// Ensure the blade stays on a fixed plane(2D)
         transform.position = newPosition;// Move the blade to the new position
 
