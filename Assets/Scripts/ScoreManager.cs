@@ -55,7 +55,7 @@ public class ScoreManager : MonoBehaviour
         gameOverText.gameObject.SetActive(true);
 
         // Start the coroutine to restart the game after a delay
-        StartCoroutine(RestartAfterDelay(2f));
+        StartCoroutine(RestartAfterDelay(3f));
     }
 
     // Coroutine to restart the game after a specified delay
