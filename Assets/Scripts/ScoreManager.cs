@@ -10,6 +10,7 @@ public class ScoreManager : MonoBehaviour
 
     private Blade blade; // Reference to the Blade component in the scene
     private Spawner spawner; // Reference to the Spawner component in the scene
+    private TargetFruits targetFruits; // Reference to the TargetFruits script
     [SerializeField]
     private TextMeshProUGUI gameOverText;
 
@@ -18,6 +19,7 @@ public class ScoreManager : MonoBehaviour
         // Find the Blade and Spawner objects in the scene when the game starts
         blade = FindFirstObjectByType<Blade>();
         spawner = FindFirstObjectByType<Spawner>();
+        targetFruits = FindFirstObjectByType<TargetFruits>();
     }
 
     private void Start()
@@ -33,6 +35,11 @@ public class ScoreManager : MonoBehaviour
         gameOverText.gameObject.SetActive(false); // Hide the Game Over text
         blade.enabled = true; // Re-enable the blade
         spawner.enabled = true; // Re-enable the spawner
+        // Generate new target fruits
+        if (targetFruits != null)
+        {
+            targetFruits.GenerateNewTargets();
+        }
     }
     public void IncreasingScore()
     {
