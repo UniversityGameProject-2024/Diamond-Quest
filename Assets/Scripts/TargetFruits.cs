@@ -34,7 +34,14 @@ public class TargetFruits : MonoBehaviour
     // Update the displayed target fruits text
     private void UpdateTargetFruitsText()
     {
-        targetFruitsText.text = $"Order: {string.Join(", ", currentTargets)}";
+        // Replace already sliced fruits with "X" in the displayed text
+        string[] displayTargets = new string[currentTargets.Length];
+        for (int i = 0; i < currentTargets.Length; i++)
+        {
+            displayTargets[i] = i < currentTargetIndex ? "X" : currentTargets[i];
+        }
+
+        targetFruitsText.text = $"Order: {string.Join(", ", displayTargets)}";
     }
 
     // Check if the fruit sliced matches the current target

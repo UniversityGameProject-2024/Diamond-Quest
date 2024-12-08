@@ -24,12 +24,14 @@ public class Blade : MonoBehaviour
     [SerializeField]
     private float minSpliceVelocity = 0.01f;
 
+    private TrailRenderer bladeTrail;
+
     private void Awake()
     {
         // Initialize references to the blade's collider and the main camera
         bladeColider = GetComponent<Collider>();
         mainCamera = Camera.main;
-        //bladeTrail = GetComponentInChildren<TrailRenderer>();
+        bladeTrail = GetComponentInChildren<TrailRenderer>();
     }
 
     private void OnEnable()
@@ -70,8 +72,8 @@ public class Blade : MonoBehaviour
 
         slicing = true;// Set slicing to active
         bladeColider.enabled = true;// Enable the blade's collider for slicing detection
-        //bladeTrail.enabled = true;
-        //bladeTrail.Clear();//remove blade trail
+        bladeTrail.enabled = true;
+        bladeTrail.Clear();//remove blade trail
     }
 
     private void StopSlicing()
@@ -79,7 +81,7 @@ public class Blade : MonoBehaviour
         // Stop slicing and disable the blade's collider
         slicing = false;
         bladeColider.enabled = false;
-        //bladeTrail.enabled = false;
+        bladeTrail.enabled = false;
     }
 
     private void ContinueSlicing()

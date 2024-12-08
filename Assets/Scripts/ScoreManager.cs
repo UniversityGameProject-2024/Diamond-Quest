@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using System.Collections;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -30,6 +31,8 @@ public class ScoreManager : MonoBehaviour
         score = 0; // Reset the score to 0
         UpdateScoreText(); // Update the UI to show the initial score
         gameOverText.gameObject.SetActive(false); // Hide the Game Over text
+        blade.enabled = true; // Re-enable the blade
+        spawner.enabled = true; // Re-enable the spawner
     }
     public void IncreasingScore()
     {
@@ -50,5 +53,15 @@ public class ScoreManager : MonoBehaviour
         spawner.enabled = false;
         // Make the TextMeshProUGUI object visible
         gameOverText.gameObject.SetActive(true);
+
+        // Start the coroutine to restart the game after a delay
+        StartCoroutine(RestartAfterDelay(2f));
+    }
+
+    // Coroutine to restart the game after a specified delay
+    private IEnumerator RestartAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay); // Wait for the specified delay
+        NewGame(); // Restart the game
     }
 }

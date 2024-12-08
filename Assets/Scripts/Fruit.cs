@@ -30,7 +30,7 @@ public class Fruit : MonoBehaviour
         //FindFirstObjectByType<ScoreManager>().IncreasingScore();
 
         // Notify the TargetFruits manager
-        TargetFruits targetFruitsManager = FindObjectOfType<TargetFruits>();
+        var targetFruitsManager = FindFirstObjectByType<TargetFruits>();
         if (targetFruitsManager.CheckTarget(fruitColor))
         {
             // Increase the score only if the correct fruit is sliced

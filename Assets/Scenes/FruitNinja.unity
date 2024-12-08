@@ -891,7 +891,7 @@ MonoBehaviour:
   - Brown
   - Green
   - Orange
-  FruitOrderAmount: 3
+  FruitOrderAmount: 4
 --- !u!1 &1086551829
 GameObject:
   m_ObjectHideFlags: 0
