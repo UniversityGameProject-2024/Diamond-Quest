@@ -36,3 +36,16 @@
 
 רעות שוסטר
 
+
+---
+
+## תודות
+
+במסגרת הפרויקט נעזרנו בבינה מלאכותית gpt וגם בסירטונים שונים של הדרכות ביוטיוב.
+
+הפלייליסט שעזר הכי הרבה - [קישור](https://www.youtube.com/watch?v=xTT1Ae_ifhM&t=1450s&ab_channel=Zigurous)
+
+מוזיקת רקע - [קישור](https://patrickdearteaga.com/musica-libre-derechos-gratis/)
+
+עזרה ביצירת טריילר למשחק - [קישור](https://www.animaker.com/)
+
