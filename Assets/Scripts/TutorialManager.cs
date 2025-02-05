@@ -86,7 +86,6 @@ public class TutorialManager : MonoBehaviour
         {
             return;
         }
-       
         bigDiamondExits = true;
         GameObject diamondPrefab = diamondPrefabs[UnityEngine.Random.Range(0, diamondPrefabs.Length)];
         Vector3 centerScreenPosition = new Vector3(0.5f, 0.5f, 10f);
@@ -98,7 +97,7 @@ public class TutorialManager : MonoBehaviour
     private void SpawnAllDiamonds()
     {
         if (spawnedDiamonds != null)
-        return;
+            return;
         spawnedDiamonds = new GameObject[diamondPrefabs.Length];
         Camera mainCamera = Camera.main;
         if (mainCamera == null)
@@ -155,7 +154,7 @@ public class TutorialManager : MonoBehaviour
             Invoke("DeleteTutorialText", 5f);
             StartCoroutine(SpawnDiamonds());
         }
-        if(stepIndex == 4)
+        if (stepIndex == 4)
         {
             GameObject[] smallDiamonds = GameObject.FindGameObjectsWithTag("Small Diamond");
             foreach (GameObject smallDiamond in smallDiamonds)
@@ -171,7 +170,7 @@ public class TutorialManager : MonoBehaviour
     private IEnumerator SpawnDiamonds()
     {
         int countSpawnedDiamonds = 0;
-        while(GameManager.Instance.IsTutorialActive)
+        while (GameManager.Instance.IsTutorialActive)
         {
             countSpawnedDiamonds++;
             randomSpawnerScript.SpawnRandomDiamondForTutorial();
