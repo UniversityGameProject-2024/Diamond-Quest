@@ -14,10 +14,6 @@ public class GameManager : MonoBehaviour
     private bool isTutorialActive = false;
 
     private bool wasDiamondSlicedWhenBossAskedToStop = false;
-
-  //  [SerializeField] private GameObject endGamePanel;
-
-
     [SerializeField] private TMP_Text textScore;
     private int score = 0;
     private int countBadDiamondsCut = 0;
@@ -28,11 +24,7 @@ public class GameManager : MonoBehaviour
     // Spawned good diamonds are spawned diamonds that have of the same 
     // color as the big diamond displayed before they were displayed
     private int countSpawnedGoodDiamonds = 0;
-
-
     private Color bigDiamondColor;
-
-
     [Header("Audio Clips")] 
     public AudioClip successSound;  
     public AudioClip failSound;   
@@ -45,21 +37,15 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI txtBadDiamondsCut;
     public TextMeshProUGUI txtCountSpawnedGoodDiamonds;
     public TextMeshProUGUI txtCountDiamondsCutWhenBossNotAllowed;
-
     public bool IsGameActive => isGameActive;
     public bool IsGameLevelActive => isGameLevelActive;
-
     public bool IsTutorialActive => isTutorialActive;
-
     public bool WasDiamondSlicedWhenBossAskedToStop => wasDiamondSlicedWhenBossAskedToStop;
     public int CountGoodDiamondsCut => countGoodDiamondsCut;
     public int CountBadDiamondsCut => countBadDiamondsCut;
     public int CountSpawnedGoodDiamonds => countSpawnedGoodDiamonds;
-
     public int CountDiamondsCutWhenBossNotAllowed => countDiamondsCutWhenBossNotAllowed;
-
     public Color BigDiamondColor => bigDiamondColor;
-
     private void Awake()
     {
         if (Instance == null)
@@ -85,7 +71,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("⚠️ Cannot return to menu before the tutorial is finished!");
         }
     }
-
     private void Start()
     {
         if (GetComponent<AudioSource>() == null)
@@ -101,19 +86,14 @@ public class GameManager : MonoBehaviour
         audioSource.playOnAwake = false;
 
     }
-
     public void SetGameActive(bool active)
     {
         isGameActive = active;
     }
-
-
     public void SetGameLevelActive(bool active)
     {
         isGameLevelActive = active;
     }
-
-
     public void SetTutorialActive(bool active)
     {
         isTutorialActive = active;
@@ -131,27 +111,22 @@ public class GameManager : MonoBehaviour
         {
             score = 0;
         }
-
         Debug.Log("🎯 Score Updated: " + score);
         textScore.text = $"Score: {score}";
        // Debug.Log("🎯 Score Updated: " + score);
     }
-
     public void SetCountBadDiamondsCut(int val)
     {
         countBadDiamondsCut = val;
     }
-
     public void SetCountGoodDiamondsCut(int val)
     {
         countGoodDiamondsCut = val;
     }
-
     public void AddToCountSpawnedGoodDiamonds(int val)
     {
         countSpawnedGoodDiamonds += val;
     }
-
     public void AddToCountBadDiamondsCut(int points)
     {
         countBadDiamondsCut += points;
@@ -160,24 +135,18 @@ public class GameManager : MonoBehaviour
     {
         countGoodDiamondsCut += points;
     }
-
     public void AddToCountDiamondsCutWhenBossNotAllowed(int val)
     {
         countDiamondsCutWhenBossNotAllowed += val;
     }
-
     public int GetScore()
     {
         return score;
     }
-
     public void SetScore(int score)
     {
         this.score = score;
-//        textScore.text = $"Score: {score}";
     }
-
-
     public void SetBigDiamondColor(Color color)
     {
         bigDiamondColor = color;

@@ -10,36 +10,34 @@ public class DiamondLabel : MonoBehaviour
     {
         CreateLabel();
     }
-
     private void CreateLabel()
     {
         GameObject textObj = new GameObject("DiamondLabel");
-        textObj.transform.SetParent(transform); // ✅ מחבר את הטקסט ליהלום
-        textObj.transform.localPosition = new Vector3(0, 1.2f, 0); // ✅ מיקום מעל היהלום
-        
+        textObj.transform.SetParent(transform);
+        textObj.transform.localPosition = new Vector3(0, 1.2f, 0); 
         label = textObj.AddComponent<TextMeshPro>();
 
-        // ✅ קובע את שם הצבע בלבד (החלק האחרון בשם)
+        // קובע את שם הצבע בלבד (החלק האחרון בשם)
         diamondColorName = ExtractColorName(gameObject.name);
         label.text = diamondColorName;
         
         label.alignment = TextAlignmentOptions.Center;
-        label.fontSize = 6; // ✅ מתאים את הגודל
-        label.color = Color.black; // ✅ צבע טקסט לבן
+        label.fontSize = 6;
+        label.color = Color.black;
 
         Debug.Log($"✅ Label created for {gameObject.name} with text: {diamondColorName}");
     }
 
-    // ✅ פונקציה שמחלצת את הצבע מתוך שם האובייקט
+    // פונקציה שמחלצת את הצבע מתוך שם האובייקט
     private string ExtractColorName(string fullName)
     {
-        fullName = fullName.Replace("(Clone)", "").Trim(); // ✅ מסיר "(Clone)"
-        string[] parts = fullName.Split('_'); // ✅ מחלק את השם לפי "_"
+        fullName = fullName.Replace("(Clone)", "").Trim();
+        string[] parts = fullName.Split('_');
 
         if (parts.Length > 1)
         {
-            return parts[parts.Length - 1]; // ✅ מחזיר רק את החלק האחרון (הצבע)
+            return parts[parts.Length - 1];
         }
-        return fullName; // אם אין "_" מחזיר את השם כמו שהוא
+        return fullName;
     }
 }

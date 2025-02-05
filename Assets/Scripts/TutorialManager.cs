@@ -19,7 +19,6 @@ public class TutorialManager : MonoBehaviour
     public GameObject skipButton;
     public Button backToMenuButton; 
 
-
     private int stepIndex = 0;
     private bool tutorialFinished = false;
     private Vector3 startPosition = new Vector3(0.5f, 0.5f, 10f);
@@ -27,10 +26,6 @@ public class TutorialManager : MonoBehaviour
     private bool bigDiamondExits = false;
     private RandomSpawner spawner;
 private GameObject bigDiamondInstance;
-
-
-
-
 
     private string[] tutorialSteps = new string[]
     {
@@ -134,11 +129,9 @@ private GameObject bigDiamondInstance;
             Debug.Log($"✅ Spawned Diamond: {diamond.name} at {spawnPos}");
         }
     }
-
     public void NextStep()
     {
         if (tutorialFinished) return;
-        
         stepIndex++;
 
         Debug.Log($"StepIndex={stepIndex}");
@@ -150,13 +143,10 @@ private GameObject bigDiamondInstance;
         else
         {
             UpdateTutorialText();
-           
         }
-
         if(stepIndex == 1)
         {
            SpawnAllDiamonds(); //  מציג את כל היהלומים באוויר בשלב 2
-            
         }
         if(stepIndex == 2)
         {
@@ -165,7 +155,6 @@ private GameObject bigDiamondInstance;
                 Destroy(diamond); 
             }
             SpawnBigDaimonds();  
-            
         }
         if(stepIndex == 3)
         {
@@ -186,12 +175,10 @@ private GameObject bigDiamondInstance;
             }
         }
     }
-
     private void DeleteTutorialText()
     {
         tutorialText.text = "";
     }
-
 private IEnumerator SpawnDiamonds()
     {
         int countSpawnedDiamonds = 0;
@@ -207,28 +194,22 @@ private IEnumerator SpawnDiamonds()
     {
         EndTutorial();
     }
-
     private void UpdateTutorialText()
     {
         tutorialText.text = tutorialSteps[stepIndex-1];
          
     }
-
     public void EndTutorial()
     {
-    
         if (GameManager.Instance == null)
         {
             return;
         }
-
-        
         GameObject[] smallDiamonds = GameObject.FindGameObjectsWithTag("Small Diamond");
             foreach (GameObject smallDiamond in smallDiamonds)
             {
              Destroy(smallDiamond);
         }
-     
         tutorialPanel.SetActive(false); 
 
         GameManager.Instance.SetTutorialActive(false);
@@ -254,9 +235,7 @@ private IEnumerator SpawnDiamonds()
         {
             backToMenuButton.gameObject.SetActive(true);
         }
-
     }
-
     private void EndGame()
     {
         GameManager.Instance.EndGame();

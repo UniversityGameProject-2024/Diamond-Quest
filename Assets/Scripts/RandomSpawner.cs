@@ -52,21 +52,12 @@ public class RandomSpawner : MonoBehaviour
     private IEnumerator SpawnDiamonds()
     {
         int countSpawnedDiamonds = 0;
-        // while (GameManager.Instance.IsGameActive && 
-        //        GameManager.Instance.IsGameLevelActive)
         while(true)
         {
             if (GameManager.Instance.IsGameActive && 
                 GameManager.Instance.IsGameLevelActive)
             {
-
                 countSpawnedDiamonds++;
-              //  if (countSpawnedDiamonds % 14 == 0)
-                // if(gameObject.)
-                // if(GameManager.Instance.GetScore() >= 2)
-                {
-                    //SpawnBoss();
-                }
                 SpawnRandomDiamond();
                 yield return new WaitForSeconds(diamondsSpawnDelay);
             }
@@ -76,7 +67,6 @@ public class RandomSpawner : MonoBehaviour
             }
         }
     }
-
     private IEnumerator SpawnBoss()
     {
         while(true)
@@ -84,26 +74,22 @@ public class RandomSpawner : MonoBehaviour
             if (GameManager.Instance.IsGameActive && 
                 GameManager.Instance.IsGameLevelActive &&
                 GameManager.Instance.GetScore() >= 10)
-            {
-                Vector3 bossPositon = new Vector3(0.8f, 0.2f, 8f);
-                Vector3 bossWorldPosition = mainCamera.ViewportToWorldPoint(bossPositon);
-
-                bossWorldPosition = new Vector3(bossWorldPosition.x, bossWorldPosition.y,
+                {
+                    Vector3 bossPositon = new Vector3(0.8f, 0.2f, 8f);
+                    Vector3 bossWorldPosition = mainCamera.ViewportToWorldPoint(bossPositon);
+                    bossWorldPosition = new Vector3(bossWorldPosition.x, bossWorldPosition.y,
                                                 3f);
-                GameManager.Instance.SetWasDiamondSlicedWhenBossAskedToStop(false);
-                boss = Instantiate(prefabBoss, bossWorldPosition, Quaternion.identity);
-
+                    GameManager.Instance.SetWasDiamondSlicedWhenBossAskedToStop(false);
+                    boss = Instantiate(prefabBoss, bossWorldPosition, Quaternion.identity);
                 // Destroy(boss, 5f);
                 Invoke("DestroyBoss", 5f);
-
                 yield return new WaitForSeconds(45f);
-            }
+                }
             else
             {
                 yield return new WaitForSeconds(1f);
             }
         }
-
     }
 
     private void DestroyBoss()
@@ -118,7 +104,6 @@ public class RandomSpawner : MonoBehaviour
             GameManager.Instance.AddScore(20);
         }
     }
-
    public void SpawnRandomDiamond()
    {
     GameObject prefab = diamondPrefabs[Random.Range(0, diamondPrefabs.Length)];
@@ -132,44 +117,17 @@ public class RandomSpawner : MonoBehaviour
         GameManager.Instance.AddToCountSpawnedGoodDiamonds(1);
         Debug.Log($"Spawned good diamonds: {GameManager.Instance.CountSpawnedGoodDiamonds}");
     }
-
     UnityEngine.Vector3 worldPosition = new UnityEngine.Vector3(0.5f, 0.5f, 0.5f);
-    int maxAttempts = 10; //  מספר ניסיונות למציאת מיקום פנוי
-    int attempt = 0;
-    const float MIN_DISTANCE_BETWEEN_DIAMONDS = 1.5f; // ✅ מרחק מינימלי בין היהלומים
-
-
-//     do
-//     {
-//         if (attempt >= maxAttempts)
-//         {
-//             Debug.LogWarning("⚠️ Could not find a free space for diamond after multiple attempts!");
-//             return; //  אם לא נמצא מקום, לא יוצרים יהלום
-//         }
-
-//         attempt++;
-
-//         Vector3 randomScreenPosition = new Vector3(
-//             Random.Range(screenPadding, 1f - screenPadding),
-//             Random.Range(screenPadding, 1f - screenPadding),
-//             10f
-//         );
-
-//         worldPosition = mainCamera.ViewportToWorldPoint(randomScreenPosition);
-//     }
-//    // while (Physics2D.OverlapCircle(worldPosition, minDistanceBetweenDiamonds)); //  בודק חפיפה לפני יצירה
-   
+    const float MIN_DISTANCE_BETWEEN_DIAMONDS = 1.5f;
     //  רוטציה קבועה
     Quaternion fixedRotation = Quaternion.Euler(-30f, 1f, 1f);
 
     for (int i=0; i<10; i++)
     {
-            Vector3 diamondPosition = new Vector3(
-                Random.Range(screenPadding, 1f - screenPadding),
-                Random.Range(screenVerticalPadding, 1f - screenVerticalPadding),
-                10f
-            );
-
+        Vector3 diamondPosition = new Vector3(
+        Random.Range(screenPadding, 1f - screenPadding),
+        Random.Range(screenVerticalPadding, 1f - screenVerticalPadding),
+            10f);
             worldPosition = mainCamera.ViewportToWorldPoint(diamondPosition);
 
             UnityEngine.Collider[] colliders = 
@@ -191,7 +149,6 @@ public class RandomSpawner : MonoBehaviour
     //  גודל קבוע
     spawnedDiamond.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
-
    // GameObject spawnedDiamond = Instantiate(prefab, worldPosition, Quaternion.identity);
     if(GameManager.Instance.GetScore() >= 10)
     {
@@ -203,8 +160,6 @@ public class RandomSpawner : MonoBehaviour
     }
     Destroy(spawnedDiamond, destroyDiamondsIntervalInSeconds);
   }
-
-
    public void SpawnRandomDiamondForTutorial()
    {
     GameObject prefab = diamondPrefabs[Random.Range(0, diamondPrefabs.Length)];
@@ -217,9 +172,7 @@ public class RandomSpawner : MonoBehaviour
     Vector3 diamondPosition = new Vector3(
         Random.Range(screenPadding, 1f - screenPadding),
         Random.Range(screenPadding, 1f - screenPadding),
-        10f
-    );
-
+        10f);
     worldPosition = mainCamera.ViewportToWorldPoint(diamondPosition);
 
     // GameObject spawnedDiamond = Instantiate(prefab, worldPosition, Quaternion.identity);
@@ -227,7 +180,6 @@ public class RandomSpawner : MonoBehaviour
 
     //  גודל קבוע
     spawnedDiamond.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-
 
     Destroy(spawnedDiamond, destroyDiamondsIntervalInSeconds);
   }

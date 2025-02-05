@@ -36,7 +36,6 @@ public class SliceableObject : MonoBehaviour
         {
             slice.AddComponent<BoxCollider>();
         }
-
         // הוסף כוח (Force) כדי להפריד את החלקים
         rb.AddForce(Random.insideUnitSphere * 3f, ForceMode.Impulse); // כוח קל
         rb.AddTorque(Random.insideUnitSphere * 3f, ForceMode.Impulse); // סיבוב קל
@@ -45,5 +44,4 @@ public class SliceableObject : MonoBehaviour
     // השמד את האובייקט המקורי
     Destroy(gameObject);
 }
-
 }

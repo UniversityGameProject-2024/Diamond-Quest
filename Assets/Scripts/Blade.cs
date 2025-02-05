@@ -17,22 +17,17 @@ public class Blade : MonoBehaviour
       //  textScore = GameObject.Find("TextScore").GetComponent<TMP_Text>();
         spawner = GameObject.Find("RandomSpawner");
     }
-
     private void Update()
     {
-
         if (GameManager.Instance == null)
         {
             Debug.Log("❌ GameManager.Instance is NULL in Blade.cs!");
             return;
         }
-        
         if (!GameManager.Instance.IsGameActive && !GameManager.Instance.IsTutorialActive)
         {
             return;
         } 
-
-
         if (Input.GetMouseButton(0)) // כאשר מחזיקים את העכבר לחוץ
         {
             Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -46,7 +41,6 @@ public class Blade : MonoBehaviour
                 {
                     return; //  לא ניתן לחתוך את היהלום הגדול
                 }
-
                 SliceableObject sliceable = hit.collider.GetComponent<SliceableObject>();
                 if (sliceable != null)
                 {
@@ -60,8 +54,6 @@ public class Blade : MonoBehaviour
                             GameObject boss = GameObject.FindWithTag("Boss");
                             if (boss != null)
                             {
-                                // score = score-5;
-                                // GameManager.Instance.AddScore(-5);
                                 GameManager.Instance.SetWasDiamondSlicedWhenBossAskedToStop(true);
                                 GameManager.Instance.AddToCountDiamondsCutWhenBossNotAllowed(1);
                                 GameManager.Instance.PlaySound(false); //  צליל כישלון
@@ -80,7 +72,6 @@ public class Blade : MonoBehaviour
                                     
                                     GameManager.Instance.PlaySound(true); //  צליל הצלחה
                                 }
-        
                                 else
                                 {
                                   //  score--;
@@ -93,7 +84,6 @@ public class Blade : MonoBehaviour
                             hit.collider.gameObject.tag = "Diamond Sliced";
                         }
                     }
-
                     if (GameManager.Instance.GetScore()  > 0 &&
                         GameManager.Instance.GetScore() % 2 == 0)
                     {
@@ -105,7 +95,6 @@ public class Blade : MonoBehaviour
                         }
                         StartCoroutine(WaitAndStartNewGameLevel());
                     }
-
                     Debug.Log("✂ Slicing successful: " + hit.collider.gameObject.name);
                 }
             }
@@ -124,6 +113,4 @@ public class Blade : MonoBehaviour
         bigDiamondColor = color;
         Debug.Log("🎨 Big diamond color set to: " + bigDiamondColor);
     }
-
-
 }
