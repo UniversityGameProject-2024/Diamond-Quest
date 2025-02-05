@@ -9,6 +9,5 @@ public class RotateDiamond : MonoBehaviour
     void Update()
     {
         transform.Rotate(0f, rotationSpeed * Time.deltaTime, 0f);
-     //transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime, Space.Self);
     }
 }
