@@ -26,7 +26,7 @@ public class Blade : MonoBehaviour
         if (!GameManager.Instance.IsGameActive && !GameManager.Instance.IsTutorialActive)
         {
             return;
-         } 
+        }
         if (Input.GetMouseButton(0))
         {
             Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -41,10 +41,8 @@ public class Blade : MonoBehaviour
                     return; //  לא ניתן לחתוך את היהלום הגדול
                 }
                 SliceableObject sliceable = hit.collider.GetComponent<SliceableObject>();
-                if (sliceable != null)
-                {
-                    sliceable.Slice(hit.point,transform.up); 
-
+                if(sliceable != null)
+                {sliceable.Slice(hit.point,transform.up); 
                     Renderer hitRenderer = hit.collider.GetComponent<Renderer>();
                     if (hitRenderer != null)
                     {

@@ -21,16 +21,15 @@ public class GameManager : MonoBehaviour
 
     private int countDiamondsCutWhenBossNotAllowed = 0;
 
-    // Spawned good diamonds are spawned diamonds that have of the same 
-    // color as the big diamond displayed before they were displayed
+    //Spawned good diamonds are spawned diamonds that have of the same 
+    //color as the big diamond displayed before they were displayed
     private int countSpawnedGoodDiamonds = 0;
     private Color bigDiamondColor;
-    [Header("Audio Clips")] 
-    public AudioClip successSound;  
-    public AudioClip failSound;   
+    [Header("Audio Clips")]
+    public AudioClip successSound;
+    public AudioClip failSound;
     private AudioSource audioSource;
-    private int scoreBad;
-     [Header("UI Elements")]
+    [Header("UI Elements")]
     public GameObject endGamePanel;
     public TextMeshProUGUI txtScore;
     public TextMeshProUGUI txtGoodDiamondsCut;
@@ -59,7 +58,7 @@ public class GameManager : MonoBehaviour
             return;
         }
     }
-     public void LoadMainMenu()
+    public void LoadMainMenu()
     {
         if (isGameActive) // ✅ הכפתור פועל רק כשהמשחק פעיל
         {
@@ -113,7 +112,6 @@ public class GameManager : MonoBehaviour
         }
         Debug.Log("🎯 Score Updated: " + score);
         textScore.text = $"Score: {score}";
-       // Debug.Log("🎯 Score Updated: " + score);
     }
     public void SetCountBadDiamondsCut(int val)
     {
@@ -176,30 +174,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
- public void EndGame()
+    public void EndGame()
     {
         isGameActive = false;
         endGamePanel.SetActive(true);
         Debug.Log("📌 Resetting table values...");
-    
-       txtScore.text = "0";
-       txtGoodDiamondsCut.text = "0";
-       txtBadDiamondsCut.text = "0";
-       txtCountSpawnedGoodDiamonds.text = "0";
-    
-         if (txtScore != null)
+        txtScore.text = "0";
+        txtGoodDiamondsCut.text = "0";
+        txtBadDiamondsCut.text = "0";
+        txtCountSpawnedGoodDiamonds.text = "0";
+        if (txtScore != null)
             txtScore.text = "Score: " + score;
 
         if (txtGoodDiamondsCut != null)
             txtGoodDiamondsCut.text = "Good Diamonds cut: " + countGoodDiamondsCut;
 
         if (txtBadDiamondsCut != null)
-            txtBadDiamondsCut.text = "Bad Diamonds cut: " + countBadDiamondsCut; 
+            txtBadDiamondsCut.text = "Bad Diamonds cut: " + countBadDiamondsCut;
 
         int missedGoodDiamonds = countSpawnedGoodDiamonds - countGoodDiamondsCut;
-        txtCountSpawnedGoodDiamonds.text = $"Missed{missedGoodDiamonds}out of{countSpawnedGoodDiamonds}good diamonds"; 
+        txtCountSpawnedGoodDiamonds.text = $"Missed{missedGoodDiamonds}out of{countSpawnedGoodDiamonds}good diamonds";
 
-        txtCountDiamondsCutWhenBossNotAllowed.text = 
+        txtCountDiamondsCutWhenBossNotAllowed.text =
             $"Diamonds cut when boss not allowed: {GameManager.Instance.CountDiamondsCutWhenBossNotAllowed}";
 
         Debug.Log("Game Over!");
