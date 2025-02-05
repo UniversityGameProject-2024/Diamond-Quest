@@ -1,109 +1,129 @@
 using UnityEngine;
+using TMPro;
+using System.Collections;
 
 public class Blade : MonoBehaviour
 {
-    private Collider bladeColider;
+    public Color bigDiamondColor;
+    private TMP_Text textScore;
+    private int score;
+    private int scoreBad;
+    private int GoodDiamonds;
+    private GameObject spawner;
 
-    // Reference to the main camera to convert screen positions to world positions
-    private Camera mainCamera;
-
-    private bool slicing;// Indicates whether the blade is currently slicing
-
-    //private TrailRenderer bladeTrail;
-    [Tooltip("Defines the force applied to fruits when they are sliced.")]
-    [SerializeField]
-    private float sliceForce = 5f;
-    public float SliceForce // sliceForce is private
+    public void Start()
     {
-        get { return sliceForce; }
-    }
-    public Vector3 direction { get; private set; }// The direction of the blade's movement
-
-    // The minimum velocity required to enable the blade's collider
-    [Tooltip("The minimum velocity required to enable the blade's collider")]
-    [SerializeField]
-    private float minSpliceVelocity = 0.01f;
-
-    private TrailRenderer bladeTrail;
-
-    private void Awake()
-    {
-        // Initialize references to the blade's collider and the main camera
-        mainCamera = Camera.main;
-        bladeColider = GetComponent<Collider>();
-        bladeTrail = GetComponentInChildren<TrailRenderer>();
-    }
-
-    private void OnEnable()
-    {
-        // Ensure slicing is stopped when the blade is enabled
-        StopSlicing();
-    }
-
-    private void OnDisable()
-    {
-        // Ensure slicing is stopped when the blade is disabled
-        StopSlicing();
+        score = 0;
+      //  textScore = GameObject.Find("TextScore").GetComponent<TMP_Text>();
+        spawner = GameObject.Find("RandomSpawner");
     }
 
     private void Update()
     {
-        // Handle input for starting, stopping, or continuing slicing
-        if (Input.GetMouseButtonDown(0))
+
+        if (GameManager.Instance == null)
         {
-            StartSlicing();
+            Debug.Log("❌ GameManager.Instance is NULL in Blade.cs!");
+            return;
         }
-        else if (Input.GetMouseButtonUp(0))
+        
+        if (!GameManager.Instance.IsGameActive && !GameManager.Instance.IsTutorialActive)
         {
-            StopSlicing();
-        }
-        else if (slicing)
+            return;
+        } 
+
+
+        if (Input.GetMouseButton(0)) // כאשר מחזיקים את העכבר לחוץ
         {
-            ContinueSlicing();
+            Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(mouseWorldPosition, Camera.main.transform.forward, out hit))
+            {
+                Debug.Log("🎯 Hit object: " + hit.collider.gameObject.name);
+
+                if (hit.collider.gameObject.tag == "Big Diamond")
+                {
+                    return; //  לא ניתן לחתוך את היהלום הגדול
+                }
+
+                SliceableObject sliceable = hit.collider.GetComponent<SliceableObject>();
+                if (sliceable != null)
+                {
+                    sliceable.Slice(hit.point, transform.up); 
+
+                    Renderer hitRenderer = hit.collider.GetComponent<Renderer>();
+                    if (hitRenderer != null)
+                    {
+                        if (hit.collider.gameObject.tag == "Small Diamond")
+                        {
+                            GameObject boss = GameObject.FindWithTag("Boss");
+                            if (boss != null)
+                            {
+                                // score = score-5;
+                                // GameManager.Instance.AddScore(-5);
+                                GameManager.Instance.SetWasDiamondSlicedWhenBossAskedToStop(true);
+                                GameManager.Instance.AddToCountDiamondsCutWhenBossNotAllowed(1);
+                                GameManager.Instance.PlaySound(false); //  צליל כישלון
+                            }
+                            else
+                            {
+                                Color diamondColor = hitRenderer.material.color;
+                                if (GameManager.Instance.ColorsMatch(diamondColor, bigDiamondColor))
+                                {
+                                  //  score++;
+                                    GoodDiamonds++;
+                                    Debug.Log("GoodDiamonds" + GoodDiamonds);
+
+                                    GameManager.Instance.AddScore(1);
+                                    GameManager.Instance.AddToCountGoodDiamondsCut(1);
+                                    
+                                    GameManager.Instance.PlaySound(true); //  צליל הצלחה
+                                }
+        
+                                else
+                                {
+                                  //  score--;
+                                    GameManager.Instance.AddScore(-1);
+                                    scoreBad++;
+                                    GameManager.Instance.AddToCountBadDiamondsCut(1);
+                                    GameManager.Instance.PlaySound(false); //  צליל כישלון
+                                }
+                            }
+                            hit.collider.gameObject.tag = "Diamond Sliced";
+                        }
+                    }
+
+                    if (GameManager.Instance.GetScore()  > 0 &&
+                        GameManager.Instance.GetScore() % 2 == 0)
+                    {
+                        GameManager.Instance.SetGameLevelActive(false);
+                        GameObject[] smallDiamonds = GameObject.FindGameObjectsWithTag("Small Diamond");
+                        foreach (GameObject smallDiamond in smallDiamonds)
+                        {
+                            Destroy(smallDiamond);
+                        }
+                        StartCoroutine(WaitAndStartNewGameLevel());
+                    }
+
+                    Debug.Log("✂ Slicing successful: " + hit.collider.gameObject.name);
+                }
+            }
         }
     }
 
-    private void StartSlicing()
+    private IEnumerator WaitAndStartNewGameLevel()
     {
-        // Convert mouse position to world position and set the blade's initial position
-        Vector3 newPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        newPosition.z = 0f;// Ensure the blade stays on a fixed plane(2D)
-        transform.position = newPosition;// Move the blade to the new position
-
-        slicing = true;// Set slicing to active
-        bladeColider.enabled = true;// Enable the blade's collider for slicing detection
-        bladeTrail.enabled = true;
-        bladeTrail.Clear();//remove blade trail
+        yield return new WaitForSeconds(2f);
+        GameManager.Instance.SetGameLevelActive(false);
+        StartCoroutine(spawner.GetComponent<RandomSpawner>().ShowBigDiamond());
     }
 
-    private void StopSlicing()
+    public void SetBigDiamondColor(Color color)
     {
-        // Stop slicing and disable the blade's collider
-        slicing = false;
-        bladeColider.enabled = false;
-        bladeTrail.enabled = false;
+        bigDiamondColor = color;
+        Debug.Log("🎨 Big diamond color set to: " + bigDiamondColor);
     }
 
-    private void ContinueSlicing()
-    {
-        // Convert mouse position to world position and calculate slicing motion
-        Vector3 newPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        newPosition.z = 0f;// Ensure the blade stays on a fixed plane(2D)
 
-        // Calculate the direction of movement
-        direction = newPosition - transform.position;
-
-        /* 
-        Calculate the velocity of the blade's movement
-        The magnitude (length) of the direction vector, which represents
-        the distance the blade moved between frames.
-        */
-        float velocity = direction.magnitude / Time.deltaTime;
-
-        // Enable the blade's collider only if the velocity exceeds the minimum required for slicing
-        bladeColider.enabled = velocity > minSpliceVelocity;
-
-        transform.position = newPosition;// Update the blade's position to the new position
-
-    }
 }
