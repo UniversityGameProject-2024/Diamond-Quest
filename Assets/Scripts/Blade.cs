@@ -79,7 +79,7 @@ public class Blade : MonoBehaviour
                             hit.collider.gameObject.tag = "Diamond Sliced";
                         }
                     }
-                    if (GameManager.Instance.GetScore() > 0 && GameManager.Instance.GetScore() % 2 == 0)
+                    if (GameManager.Instance.GetScore() > 0 && GameManager.Instance.GetScore() % 5 == 0)
                     {
                         GameManager.Instance.SetGameLevelActive(false);
                         GameObject[] smallDiamonds = GameObject.FindGameObjectsWithTag("Small Diamond");
