@@ -6,7 +6,7 @@
 
 מטרת המשחק היא לשפר את יכולות הריכוז, הזיכרון והתגובה של השחקן באמצעות משימות דינאמיות 
 ## לינק למשחק(במסגרת המטלה של הקורס)
-[קישור לitch.io](https://wnikita.itch.io/diamond-quest)
+[קישור לitch.io](https://yakovelkobi.itch.io/diamond-q)
 
 ## קישור לדף עם הרכיבים הרשמיים
 [קישור לWiki](https://github.com/UniversityGameProject-2024/Diamond-Quest/wiki)
@@ -48,4 +48,6 @@
 מוזיקת רקע - [קישור](https://patrickdearteaga.com/musica-libre-derechos-gratis/)
 
 עזרה ביצירת טריילר למשחק - [קישור](https://www.animaker.com/)
+בניית היהלומים בתוכנת בלנדר
+
 
