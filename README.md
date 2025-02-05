@@ -8,7 +8,7 @@
 
 ## טריילר
 
-[יוטיוב](https://www.youtube.com/watch?v=dsA7NYEtpYg&ab_channel=Nikita)
+[יוטיוב](https://www.youtube.com/watch?v=vToYnMaz_p4&ab_channel=Nikita)
 
 ## לינק למשחק(במסגרת המטלה של הקורס)
 [קישור לitch.io](https://yakovelkobi.itch.io/diamond-q)
