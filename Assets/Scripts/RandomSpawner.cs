@@ -1,52 +1,40 @@
 using UnityEngine;
 using System.Collections;
-    public class RandomSpawner : MonoBehaviour
-    {
+
+public class RandomSpawner : MonoBehaviour
+{
     [Header("Prefab Settings")]
-    public GameObject[] diamondPrefabs; //  מערך של יהלומים לבחירה
+    public GameObject[] diamondPrefabs;
 
-    public float diamondsSpawnDelay = 1f; // זמן בין הופעות יהלומים
-    public float screenPadding = 0.1f; // שוליים למניעת הופעה מחוץ למסך
-    public float screenVerticalPadding = 0.2f; // שוליים למניעת הופעה מחוץ למסך
-
+    public float diamondsSpawnDelay = 1f;
+    public float screenPadding = 0.1f;
+    public float screenVerticalPadding = 0.2f;
     public float destroyDiamondsIntervalInSeconds = 5;
-
     private Camera mainCamera;
-
     [SerializeField] public GameObject prefabBoss;
-
     GameObject boss;
-
     private void Start()
     {
         mainCamera = Camera.main;
-        // StartCoroutine(ShowBigDiamond());
+        //StartCoroutine(ShowBigDiamond());
         GameManager.Instance.SetGameLevelActive(false);
-        StartCoroutine(SpawnDiamonds()); //  ממשיך לייצר יהלומים רגילים
+        StartCoroutine(SpawnDiamonds());
         StartCoroutine(SpawnBoss());
     }
-
     public IEnumerator ShowBigDiamond()
     {
-        yield return new WaitForSeconds(1f); //  מחכה שנייה נוספת לפני יצירת היהלומים הרגילים
-
+        yield return new WaitForSeconds(1f);
         GameObject diamondPrefab = diamondPrefabs[Random.Range(0, diamondPrefabs.Length)];
         Vector3 centerScreenPosition = new Vector3(0.5f, 0.5f, 10f);
         Vector3 worldPosition = mainCamera.ViewportToWorldPoint(centerScreenPosition);
-
-        //  יוצרים את היהלום הגדול דרך המחלקה שלו
         BigDiamond bigDiamond = BigDiamond.Create(diamondPrefab, worldPosition);
-
         if (bigDiamond != null)
         {
-            yield return new WaitForSeconds(3.5f); //  מחכה עד שהיהלום הגדול נעלם
+            yield return new WaitForSeconds(3.5f);
         }
-
-        yield return new WaitForSeconds(1f); //  מחכה שנייה נוספת לפני יצירת היהלומים הרגילים
-
+        yield return new WaitForSeconds(1f);
         GameManager.Instance.SetGameLevelActive(true);
     }
-
     private IEnumerator SpawnDiamonds()
     {
         int countSpawnedDiamonds = 0;
@@ -116,8 +104,7 @@ using System.Collections;
     {
         Vector3 diamondPosition = new Vector3(
         Random.Range(screenPadding ,1f-screenPadding),
-        Random.Range(screenVerticalPadding, 1f-screenVerticalPadding),
-            10f);
+        Random.Range(screenVerticalPadding, 1f-screenVerticalPadding),10f);
             worldPosition = mainCamera.ViewportToWorldPoint(diamondPosition);
             UnityEngine.Collider[] colliders = 
                 Physics.OverlapSphere(worldPosition, MIN_DISTANCE_BETWEEN_DIAMONDS);
@@ -134,33 +121,28 @@ using System.Collections;
     //GameObject spawnedDiamond = Instantiate(prefab, worldPosition, Quaternion.identity);
     GameObject spawnedDiamond = Instantiate(prefab, worldPosition, fixedRotation);
     spawnedDiamond.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-   //GameObject spawnedDiamond = Instantiate(prefab, worldPosition, Quaternion.identity);
-    if(GameManager.Instance.GetScore() >= 10)
+    //GameObject spawnedDiamond = Instantiate(prefab, worldPosition, Quaternion.identity);
+    if(GameManager.Instance.GetScore()>=10)
     {
-        if(destroyDiamondsIntervalInSeconds > 4)
+        if(destroyDiamondsIntervalInSeconds>4)
         {
             destroyDiamondsIntervalInSeconds--;
         }
         diamondsSpawnDelay = 0.7f;
     }
     Destroy(spawnedDiamond, destroyDiamondsIntervalInSeconds);
-  }
+    }
    public void SpawnRandomDiamondForTutorial()
    {
-    GameObject prefab = diamondPrefabs[Random.Range(0, diamondPrefabs.Length)];
+    GameObject prefab = diamondPrefabs[Random.Range(0,diamondPrefabs.Length)];
     prefab.tag = "Small Diamond";
     Vector3 worldPosition;
     Quaternion fixedRotation = Quaternion.Euler(-30f, 1f, 1f);
-    Vector3 diamondPosition = new Vector3(
-        Random.Range(screenPadding, 1f-screenPadding),
-        Random.Range(screenPadding, 1f-screenPadding),
-        10f);
+    Vector3 diamondPosition = new Vector3(Random.Range(screenPadding,1f-screenPadding),Random.Range(screenPadding,1f-screenPadding),10f);
     worldPosition = mainCamera.ViewportToWorldPoint(diamondPosition);
-    // GameObject spawnedDiamond = Instantiate(prefab, worldPosition, Quaternion.identity);
+    //GameObject spawnedDiamond = Instantiate(prefab, worldPosition, Quaternion.identity);
     GameObject spawnedDiamond = Instantiate(prefab, worldPosition, fixedRotation);
-
     spawnedDiamond.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-
-    Destroy(spawnedDiamond, destroyDiamondsIntervalInSeconds);
-  }
+    Destroy(spawnedDiamond,destroyDiamondsIntervalInSeconds);
+    }
 }

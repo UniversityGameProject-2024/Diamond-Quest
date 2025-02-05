@@ -82,7 +82,7 @@ public class TutorialManager : MonoBehaviour
     }
     private void SpawnBigDaimonds()
     {
-        if(bigDiamondExits)
+        if (bigDiamondExits)
         {
             return;
         }
@@ -132,11 +132,11 @@ public class TutorialManager : MonoBehaviour
         {
             UpdateTutorialText();
         }
-        if(stepIndex == 1)
+        if (stepIndex == 1)
         {
             SpawnAllDiamonds();
         }
-        if(stepIndex == 2)
+        if (stepIndex == 2)
         {
             foreach (GameObject diamond in spawnedDiamonds)
             {
@@ -144,7 +144,7 @@ public class TutorialManager : MonoBehaviour
             }
             SpawnBigDaimonds();
         }
-        if(stepIndex == 3)
+        if (stepIndex == 3)
         {
             if (bigDiamondInstance != null)
             {
