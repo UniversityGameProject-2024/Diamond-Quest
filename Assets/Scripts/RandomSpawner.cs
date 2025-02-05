@@ -2,8 +2,8 @@ using UnityEngine;
 using System.Collections;
 
 
-public class RandomSpawner : MonoBehaviour
-{
+    public class RandomSpawner : MonoBehaviour
+    {
     [Header("Prefab Settings")]
     public GameObject[] diamondPrefabs; //  מערך של יהלומים לבחירה
 
@@ -54,8 +54,7 @@ public class RandomSpawner : MonoBehaviour
         int countSpawnedDiamonds = 0;
         while(true)
         {
-            if(GameManager.Instance.IsGameActive &&
-            GameManager.Instance.IsGameLevelActive)
+            if(GameManager.Instance.IsGameActive&&GameManager.Instance.IsGameLevelActive)
             {
                 countSpawnedDiamonds++;
                 SpawnRandomDiamond();
@@ -71,9 +70,8 @@ public class RandomSpawner : MonoBehaviour
     {
         while(true)
         {
-            if (GameManager.Instance.IsGameActive && 
-                GameManager.Instance.IsGameLevelActive &&
-                GameManager.Instance.GetScore() >= 10)
+            if(GameManager.Instance.IsGameActive&&GameManager.Instance.IsGameLevelActive&&
+            GameManager.Instance.GetScore()>=10)
                 {
                     Vector3 bossPositon = new Vector3(0.8f, 0.2f, 8f);
                     Vector3 bossWorldPosition = mainCamera.ViewportToWorldPoint(bossPositon);
@@ -119,8 +117,8 @@ public class RandomSpawner : MonoBehaviour
     for(int i=0; i<10; i++)
     {
         Vector3 diamondPosition = new Vector3(
-        Random.Range(screenPadding, 1f - screenPadding),
-        Random.Range(screenVerticalPadding, 1f - screenVerticalPadding),
+        Random.Range(screenPadding ,1f-screenPadding),
+        Random.Range(screenVerticalPadding, 1f-screenVerticalPadding),
             10f);
             worldPosition = mainCamera.ViewportToWorldPoint(diamondPosition);
             UnityEngine.Collider[] colliders = 
@@ -156,13 +154,15 @@ public class RandomSpawner : MonoBehaviour
     Vector3 worldPosition;
     Quaternion fixedRotation = Quaternion.Euler(-30f, 1f, 1f);
     Vector3 diamondPosition = new Vector3(
-        Random.Range(screenPadding, 1f - screenPadding),
-        Random.Range(screenPadding, 1f - screenPadding),
+        Random.Range(screenPadding, 1f-screenPadding),
+        Random.Range(screenPadding, 1f-screenPadding),
         10f);
     worldPosition = mainCamera.ViewportToWorldPoint(diamondPosition);
     // GameObject spawnedDiamond = Instantiate(prefab, worldPosition, Quaternion.identity);
     GameObject spawnedDiamond = Instantiate(prefab, worldPosition, fixedRotation);
+
     spawnedDiamond.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+
     Destroy(spawnedDiamond, destroyDiamondsIntervalInSeconds);
   }
 }
