@@ -10,7 +10,7 @@ public class TutorialManager : MonoBehaviour
     public static TutorialManager Instance;
 
     [Header("Prefab Settings")]
-    public GameObject[] diamondPrefabs; //  מערך של יהלומים לבחירה
+    public GameObject[] diamondPrefabs;
 
     [Header("Tutorial UI")]
     public GameObject tutorialPanel;
@@ -78,14 +78,15 @@ public class TutorialManager : MonoBehaviour
         tutorialPanel.SetActive(true);
         GameManager.Instance.SetTutorialActive(true);
         GameManager.Instance.SetGameActive(false);
-     //   UpdateTutorialText();
-         nextButton.GetComponent<Button>().interactable = false;
-        
+        nextButton.GetComponent<Button>().interactable = false;
     }
-
     private void SpawnBigDaimonds()
     {
-        if (bigDiamondExits) return;
+        if(bigDiamondExits)
+        {
+            return;
+        }
+       
         bigDiamondExits = true;
         GameObject diamondPrefab = diamondPrefabs[UnityEngine.Random.Range(0, diamondPrefabs.Length)];
         Vector3 centerScreenPosition = new Vector3(0.5f, 0.5f, 10f);
@@ -94,24 +95,24 @@ public class TutorialManager : MonoBehaviour
         bigDiamondInstance = Instantiate(diamondPrefab, worldPosition, fixedRotation);
         bigDiamondInstance.transform.localScale = new Vector3(3f, 3f, 3f);
     }
-      private void SpawnAllDiamonds()
+    private void SpawnAllDiamonds()
     {
-        if (spawnedDiamonds != null) return;
+        if (spawnedDiamonds != null)
+        return;
         spawnedDiamonds = new GameObject[diamondPrefabs.Length];
         Camera mainCamera = Camera.main;
         if (mainCamera == null)
         {
-            Debug.LogError("❌ No Main Camera found!");
             return;
         }
-        Vector3 screenCenter = mainCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 5f)); // ✅ מוודא שהיהלומים יהיו **בטווח הראייה של המצלמה**
-        float spacing =4f;
+        Vector3 screenCenter = mainCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 5f));
+        float spacing = 4f;
         for (int i = 0; i < diamondPrefabs.Length; i++)
         {
-            Vector3 spawnPos = screenCenter + new Vector3((i - diamondPrefabs.Length / 2) * spacing, 0, 0); // ✅ מסדר את היהלומים **באמצע המסך**
-            Quaternion rotation = Quaternion.Euler(-30f, 0f, 0f); // ✅ מוסיף הטייה של -30° בציר X
+            Vector3 spawnPos = screenCenter + new Vector3((i - diamondPrefabs.Length / 2) * spacing, 0, 0);
+            Quaternion rotation = Quaternion.Euler(-30f, 0f, 0f);
             GameObject diamond = Instantiate(diamondPrefabs[i], spawnPos, rotation);
-            diamond.transform.localScale = Vector3.one * 2f; // ✅ משנה את הגודל
+            diamond.transform.localScale = Vector3.one * 2f;
             DiamondLabel label = diamond.AddComponent<DiamondLabel>();
             spawnedDiamonds[i] = diamond;
 
@@ -124,7 +125,6 @@ public class TutorialManager : MonoBehaviour
         stepIndex++;
 
         Debug.Log($"StepIndex={stepIndex}");
-       
         if (stepIndex > tutorialSteps.Length)
         {
             EndTutorial();
@@ -135,7 +135,7 @@ public class TutorialManager : MonoBehaviour
         }
         if(stepIndex == 1)
         {
-           SpawnAllDiamonds(); //  מציג את כל היהלומים באוויר בשלב 2
+            SpawnAllDiamonds();
         }
         if(stepIndex == 2)
         {
@@ -149,8 +149,8 @@ public class TutorialManager : MonoBehaviour
         {
             if (bigDiamondInstance != null)
             {
-               Destroy(bigDiamondInstance); // ✅ הורס את היהלום הגדול כשהמשתמש מתקדם משלב 2 לשלב 3
-               bigDiamondInstance = null;
+                Destroy(bigDiamondInstance);
+                bigDiamondInstance = null;
             }
             Invoke("DeleteTutorialText", 5f);
             StartCoroutine(SpawnDiamonds());
@@ -168,7 +168,7 @@ public class TutorialManager : MonoBehaviour
     {
         tutorialText.text = "";
     }
-private IEnumerator SpawnDiamonds()
+    private IEnumerator SpawnDiamonds()
     {
         int countSpawnedDiamonds = 0;
         while(GameManager.Instance.IsTutorialActive)
@@ -184,8 +184,7 @@ private IEnumerator SpawnDiamonds()
     }
     private void UpdateTutorialText()
     {
-        tutorialText.text = tutorialSteps[stepIndex-1];
-         
+        tutorialText.text = tutorialSteps[stepIndex - 1];
     }
     public void EndTutorial()
     {
@@ -194,12 +193,11 @@ private IEnumerator SpawnDiamonds()
             return;
         }
         GameObject[] smallDiamonds = GameObject.FindGameObjectsWithTag("Small Diamond");
-            foreach (GameObject smallDiamond in smallDiamonds)
-            {
-             Destroy(smallDiamond);
+        foreach (GameObject smallDiamond in smallDiamonds)
+        {
+            Destroy(smallDiamond);
         }
-        tutorialPanel.SetActive(false); 
-
+        tutorialPanel.SetActive(false);
         GameManager.Instance.SetTutorialActive(false);
         GameManager.Instance.SetGameActive(true);
         GameManager.Instance.SetGameLevelActive(false);

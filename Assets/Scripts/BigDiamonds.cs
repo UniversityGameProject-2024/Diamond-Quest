@@ -17,23 +17,19 @@ public class BigDiamond : MonoBehaviour
             return null;
         }
 
-        hasSpawned = true; //  מסמן שכבר נוצר יהלום גדול
+        hasSpawned = true;
         Quaternion fixedRotation = Quaternion.Euler(-30f, 1f, 1f);
-
         GameObject bigDiamondObj = Instantiate(diamondPrefab, position, fixedRotation);
         bigDiamondObj.tag = "Big Diamond";
         bigDiamondObj.transform.localScale = new Vector3(scaleBigDiamond, scaleBigDiamond, scaleBigDiamond); // ✅ גודל גדול
-         //  הוספת סיבוב ליהלום הגדול
         RotateDiamond rotateScript = bigDiamondObj.AddComponent<RotateDiamond>();
-        rotateScript.rotationSpeed = 50f; // ניתן לשנות מהירות
+        rotateScript.rotationSpeed = 50f;
 
 
         BigDiamond bigDiamond = bigDiamondObj.AddComponent<BigDiamond>();
 
         return bigDiamond;
     }
-    
-
     private void Start()
     {
         diamondRenderer = GetComponent<Renderer>();
