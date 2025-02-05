@@ -54,7 +54,7 @@ using System.Collections;
         int countSpawnedDiamonds = 0;
         while(true)
         {
-            if(GameManager.Instance.IsGameActive&&GameManager.Instance.IsGameLevelActive)
+            if (GameManager.Instance.IsGameActive && GameManager.Instance.IsGameLevelActive)
             {
                 countSpawnedDiamonds += 1;
                 SpawnRandomDiamond();
