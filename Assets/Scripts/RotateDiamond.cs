@@ -8,8 +8,7 @@ public class RotateDiamond : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(0f, rotationSpeed * Time.deltaTime, 0f);  
-
+        transform.Rotate(0f, rotationSpeed * Time.deltaTime, 0f);
      //   transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime, Space.Self);
     }
 }
