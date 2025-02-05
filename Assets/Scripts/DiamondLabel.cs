@@ -14,7 +14,7 @@ public class DiamondLabel : MonoBehaviour
     {
         GameObject textObj = new GameObject("DiamondLabel");
         textObj.transform.SetParent(transform);
-        textObj.transform.localPosition = new Vector3(0, 1.2f, 0); 
+        textObj.transform.localPosition = new Vector3(0, 1.2f, 0);
         label = textObj.AddComponent<TextMeshPro>();
         diamondColorName = ExtractColorName(gameObject.name);
         label.text = diamondColorName;
@@ -22,7 +22,7 @@ public class DiamondLabel : MonoBehaviour
         label.fontSize = 6;
         label.color = Color.black;
         Debug.Log($"Label created for {gameObject.name} with text: {diamondColorName}");
-        }
+    }
     private string ExtractColorName(string fullName)
     {
         fullName = fullName.Replace("(Clone)", "").Trim();
