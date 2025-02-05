@@ -14,7 +14,6 @@ public class Blade : MonoBehaviour
     public void Start()
     {
         score = 0;
-      //  textScore = GameObject.Find("TextScore").GetComponent<TMP_Text>();
         spawner = GameObject.Find("RandomSpawner");
     }
     private void Update()
@@ -27,8 +26,8 @@ public class Blade : MonoBehaviour
         if (!GameManager.Instance.IsGameActive && !GameManager.Instance.IsTutorialActive)
         {
             return;
-        } 
-        if (Input.GetMouseButton(0)) // כאשר מחזיקים את העכבר לחוץ
+         } 
+        if (Input.GetMouseButton(0))
         {
             Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit hit;
@@ -44,7 +43,7 @@ public class Blade : MonoBehaviour
                 SliceableObject sliceable = hit.collider.GetComponent<SliceableObject>();
                 if (sliceable != null)
                 {
-                    sliceable.Slice(hit.point, transform.up); 
+                    sliceable.Slice(hit.point,transform.up); 
 
                     Renderer hitRenderer = hit.collider.GetComponent<Renderer>();
                     if (hitRenderer != null)
@@ -63,18 +62,15 @@ public class Blade : MonoBehaviour
                                 Color diamondColor = hitRenderer.material.color;
                                 if (GameManager.Instance.ColorsMatch(diamondColor, bigDiamondColor))
                                 {
-                                  //  score++;
                                     GoodDiamonds++;
                                     Debug.Log("GoodDiamonds" + GoodDiamonds);
 
                                     GameManager.Instance.AddScore(1);
                                     GameManager.Instance.AddToCountGoodDiamondsCut(1);
-                                    
                                     GameManager.Instance.PlaySound(true); //  צליל הצלחה
                                 }
                                 else
                                 {
-                                  //  score--;
                                     GameManager.Instance.AddScore(-1);
                                     scoreBad++;
                                     GameManager.Instance.AddToCountBadDiamondsCut(1);
@@ -84,8 +80,7 @@ public class Blade : MonoBehaviour
                             hit.collider.gameObject.tag = "Diamond Sliced";
                         }
                     }
-                    if (GameManager.Instance.GetScore()  > 0 &&
-                        GameManager.Instance.GetScore() % 2 == 0)
+                    if (GameManager.Instance.GetScore() > 0 && GameManager.Instance.GetScore() % 2 == 0)
                     {
                         GameManager.Instance.SetGameLevelActive(false);
                         GameObject[] smallDiamonds = GameObject.FindGameObjectsWithTag("Small Diamond");

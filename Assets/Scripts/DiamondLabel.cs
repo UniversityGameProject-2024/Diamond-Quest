@@ -21,7 +21,7 @@ public class DiamondLabel : MonoBehaviour
         label.alignment = TextAlignmentOptions.Center;
         label.fontSize = 6;
         label.color = Color.black;
-        }
+    }
     private string ExtractColorName(string fullName)
     {
         fullName = fullName.Replace("(Clone)", "").Trim();

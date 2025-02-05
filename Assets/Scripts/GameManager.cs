@@ -197,7 +197,7 @@ public class GameManager : MonoBehaviour
             txtBadDiamondsCut.text = "Bad Diamonds cut: " + countBadDiamondsCut; 
 
         int missedGoodDiamonds = countSpawnedGoodDiamonds - countGoodDiamondsCut;
-        txtCountSpawnedGoodDiamonds.text = $"Missed {missedGoodDiamonds} out of {countSpawnedGoodDiamonds} good diamonds"; 
+        txtCountSpawnedGoodDiamonds.text = $"Missed{missedGoodDiamonds}out of{countSpawnedGoodDiamonds}good diamonds"; 
 
         txtCountDiamondsCutWhenBossNotAllowed.text = 
             $"Diamonds cut when boss not allowed: {GameManager.Instance.CountDiamondsCutWhenBossNotAllowed}";
