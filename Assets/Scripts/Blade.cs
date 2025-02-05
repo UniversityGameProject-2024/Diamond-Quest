@@ -42,7 +42,8 @@ public class Blade : MonoBehaviour
                 }
                 SliceableObject sliceable = hit.collider.GetComponent<SliceableObject>();
                 if(sliceable != null)
-                {sliceable.Slice(hit.point,transform.up); 
+                {
+                    sliceable.Slice(hit.point,transform.up); 
                     Renderer hitRenderer = hit.collider.GetComponent<Renderer>();
                     if (hitRenderer != null)
                     {
