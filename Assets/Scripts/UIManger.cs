@@ -8,10 +8,10 @@ public class UiManger : MonoBehaviour
     public String firstSceneName;
     public void Play()
     {
-      SceneManager.LoadScene(firstSceneName);
+        SceneManager.LoadScene(firstSceneName);
     }
     public void Exit()
     {
-      Application.Quit();
+        Application.Quit();
     }
 }
