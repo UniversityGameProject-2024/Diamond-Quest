@@ -16,24 +16,17 @@ public class DiamondLabel : MonoBehaviour
         textObj.transform.SetParent(transform);
         textObj.transform.localPosition = new Vector3(0, 1.2f, 0); 
         label = textObj.AddComponent<TextMeshPro>();
-
-        // קובע את שם הצבע בלבד (החלק האחרון בשם)
         diamondColorName = ExtractColorName(gameObject.name);
         label.text = diamondColorName;
-        
         label.alignment = TextAlignmentOptions.Center;
         label.fontSize = 6;
         label.color = Color.black;
-
-        Debug.Log($"✅ Label created for {gameObject.name} with text: {diamondColorName}");
+        Debug.Log($"Label created for {gameObject.name} with text: {diamondColorName}");
     }
-
-    // פונקציה שמחלצת את הצבע מתוך שם האובייקט
     private string ExtractColorName(string fullName)
     {
         fullName = fullName.Replace("(Clone)", "").Trim();
         string[] parts = fullName.Split('_');
-
         if (parts.Length > 1)
         {
             return parts[parts.Length - 1];
