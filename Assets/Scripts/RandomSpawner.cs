@@ -1,9 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-
-    public class RandomSpawner : MonoBehaviour
-    {
+    public class RandomSpawner : MonoBehaviour{
     [Header("Prefab Settings")]
     public GameObject[] diamondPrefabs; //  מערך של יהלומים לבחירה
 
