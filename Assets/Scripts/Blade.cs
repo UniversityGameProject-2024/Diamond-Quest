@@ -41,9 +41,9 @@ public class Blade : MonoBehaviour
                     return; //  לא ניתן לחתוך את היהלום הגדול
                 }
                 SliceableObject sliceable = hit.collider.GetComponent<SliceableObject>();
-                if(sliceable != null)
+                if (sliceable != null)
                 {
-                    sliceable.Slice(hit.point,transform.up); 
+                    sliceable.Slice(hit.point, transform.up);
                     Renderer hitRenderer = hit.collider.GetComponent<Renderer>();
                     if (hitRenderer != null)
                     {
