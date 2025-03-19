@@ -4,6 +4,8 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine.UI;
 using System;
+using UnityEngine.SceneManagement;
+
 
 public class TutorialManager : MonoBehaviour
 {
@@ -18,6 +20,8 @@ public class TutorialManager : MonoBehaviour
     public GameObject nextButton;
     public GameObject skipButton;
     public Button backToMenuButton;
+    public GameObject endGamePanel;
+
 
     private int stepIndex = 0;
     private bool tutorialFinished = false;
@@ -34,6 +38,16 @@ public class TutorialManager : MonoBehaviour
     };
     private Camera mainCamera;
     GameObject diamondTutorial;
+    [SerializeField] private TMP_Text textScore;
+    public TextMeshProUGUI txtScoreTable;
+    public TextMeshProUGUI txtGoodDiamondsCut;
+    public TextMeshProUGUI txtBadDiamondsCut;
+    public TextMeshProUGUI txtCountSpawnedGoodDiamonds;
+    public TextMeshProUGUI txtCountDiamondsCutWhenBossNotAllowed;
+
+    public TMP_Text TextScore => textScore;
+
+
 
     private RandomSpawner randomSpawnerScript;
 
@@ -59,10 +73,10 @@ public class TutorialManager : MonoBehaviour
     public void Start()
     {
 
-        if (backToMenuButton != null)
-        {
-            backToMenuButton.gameObject.SetActive(false);
-        }
+        // if (backToMenuButton != null)
+        // {
+        //     backToMenuButton.gameObject.SetActive(false);
+        // }
 
         StartTutorial();
     }
@@ -185,6 +199,11 @@ public class TutorialManager : MonoBehaviour
     {
         tutorialText.text = tutorialSteps[stepIndex - 1];
     }
+    public void SetTextScore(int score)
+    {
+         Debug.Log("🎯 Score Updated: " + score);
+        textScore.text = $"Score: {score}";
+    }
     public void EndTutorial()
     {
         if (GameManager.Instance == null)
@@ -218,9 +237,62 @@ public class TutorialManager : MonoBehaviour
         {
             backToMenuButton.gameObject.SetActive(true);
         }
+
+        // // -------------------------
+
+        // Debug.Log("Finding BackToMenuButton");
+        // Button btnMainMenu = GameObject.Find("BackToMenuButton")?.GetComponent<Button>();
+        // Debug.Log($"btnMainMenu={btnMainMenu}");
+        // if (btnMainMenu != null)
+        // {
+        //     Debug.Log("Adding listener to btnMainMenu");
+        //     btnMainMenu.onClick.RemoveAllListeners();
+        //     btnMainMenu.onClick.AddListener(GameManager.Instance.LoadMainMenu);
+        // }
+
+
+
+    }
+    public void LoadMainMenu()
+    {
+        //menuPanel.SetActive(true);
+       // SceneManager.LoadScene("MeinMenu");
+         if (GameManager.Instance.IsGameActive) // ✅ הכפתור פועל רק כשהמשחק פעיל
+        {
+            Debug.Log(" Returning to Main Menu...");
+            SceneManager.LoadScene("MainMenu");
+        }
+        else
+        {
+            Debug.Log("⚠️ Cannot return to menu before the tutorial is finished!");
+        }
+
     }
     private void EndGame()
     {
-        GameManager.Instance.EndGame();
-    }
+        GameManager.Instance.SetGameActive(false);
+        endGamePanel.SetActive(true);
+        Debug.Log("📌 Resetting table values...");
+        txtScoreTable.text = "0";
+        txtGoodDiamondsCut.text = "0";
+        txtBadDiamondsCut.text = "0";
+        txtCountSpawnedGoodDiamonds.text = "0";
+        if (txtScoreTable != null)
+            txtScoreTable.text = "Score: " + GameManager.Instance.GetScore();
+
+        if (txtGoodDiamondsCut != null)
+            txtGoodDiamondsCut.text = "Good Diamonds cut: " + GameManager.Instance.CountGoodDiamondsCut;
+
+        if (txtBadDiamondsCut != null)
+            txtBadDiamondsCut.text = "Bad Diamonds cut: " + GameManager.Instance.CountBadDiamondsCut;
+
+        int missedGoodDiamonds = GameManager.Instance.CountSpawnedGoodDiamonds - GameManager.Instance.CountGoodDiamondsCut;
+        txtCountSpawnedGoodDiamonds.text = $"Missed {missedGoodDiamonds} out of {GameManager.Instance.CountSpawnedGoodDiamonds} good diamonds";
+
+        txtCountDiamondsCutWhenBossNotAllowed.text =
+            $"Diamonds cut when boss not allowed: {GameManager.Instance.CountDiamondsCutWhenBossNotAllowed}";
+
+        Debug.Log("Game Over!");
+      //  GameManager.Instance.EndGame();
+    }    
 }

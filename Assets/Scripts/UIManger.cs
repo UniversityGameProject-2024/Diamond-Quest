@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class UiManger : MonoBehaviour
+public class UIManger : MonoBehaviour
 {
     [SerializeField]
     public String firstSceneName;
