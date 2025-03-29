@@ -2587,7 +2587,9 @@ MonoBehaviour:
   screenPadding: 0.1
   screenVerticalPadding: 0.2
   destroyDiamondsIntervalInSeconds: 5
-  prefabBoss: {fileID: 6534954348377639402, guid: 121261bbe96b94c5e82ff45392a1f43e, type: 3}
+  prefabBoss: {fileID: 8515651736125815559, guid: 2f261d999b84f9b4fb495ee31fa933a1, type: 3}
+  bossSpawnTime: 10
+  bossDestroy: 5
 --- !u!4 &1017823280
 Transform:
   m_ObjectHideFlags: 0

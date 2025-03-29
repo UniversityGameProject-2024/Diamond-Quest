@@ -11,7 +11,10 @@ public class RandomSpawner : MonoBehaviour
     public float screenVerticalPadding = 0.2f;
     public float destroyDiamondsIntervalInSeconds = 5;
     private Camera mainCamera;
+    [Header("Stop Sign / Boss")]
     [SerializeField] public GameObject prefabBoss;
+    [SerializeField] private float bossSpawnTime = 10;
+    [SerializeField] private float bossDestroy = 5;
     GameObject boss;
     private void Start()
     {
@@ -56,14 +59,14 @@ public class RandomSpawner : MonoBehaviour
     {
         while (true)
         {
-            if (GameManager.Instance.IsGameActive && GameManager.Instance.IsGameLevelActive && GameManager.Instance.GetScore() >= 10)
+            if (GameManager.Instance.IsGameActive && GameManager.Instance.IsGameLevelActive && GameManager.Instance.GetScore() >= bossSpawnTime)
             {
                 Vector3 bossPositon = new Vector3(0.8f, 0.2f, 8f);
                 Vector3 bossWorldPosition = mainCamera.ViewportToWorldPoint(bossPositon);
                 bossWorldPosition = new Vector3(bossWorldPosition.x, bossWorldPosition.y, 3f);
                 GameManager.Instance.SetWasDiamondSlicedWhenBossAskedToStop(false);
                 boss = Instantiate(prefabBoss, bossWorldPosition, Quaternion.identity);
-                Invoke("DestroyBoss", 5f);
+                Invoke("DestroyBoss", bossDestroy);
                 yield return new WaitForSeconds(45f);
             }
             else
