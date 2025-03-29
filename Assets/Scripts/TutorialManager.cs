@@ -202,7 +202,7 @@ public class TutorialManager : MonoBehaviour
     public void SetTextScore(int score)
     {
          Debug.Log("🎯 Score Updated: " + score);
-        textScore.text = $"Score: {score}";
+        textScore.text = $"ניקוד: {score}";
     }
     public void EndTutorial()
     {
