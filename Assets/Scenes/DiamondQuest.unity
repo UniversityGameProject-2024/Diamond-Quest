@@ -2596,6 +2596,8 @@ MonoBehaviour:
   prefabBoss: {fileID: 8515651736125815559, guid: 2f261d999b84f9b4fb495ee31fa933a1, type: 3}
   bossSpawnTime: 10
   bossDestroy: 5
+  snakePrefab: {fileID: 1525245462199556611, guid: 0a0fd1f27f2a64d4db8ca528426afe8d, type: 3}
+  snakeSpawnDelay: 6
 --- !u!4 &1017823280
 Transform:
   m_ObjectHideFlags: 0

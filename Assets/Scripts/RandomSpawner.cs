@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class RandomSpawner : MonoBehaviour
@@ -16,6 +16,10 @@ public class RandomSpawner : MonoBehaviour
     [SerializeField] private float bossSpawnTime = 10;
     [SerializeField] private float bossDestroy = 5;
     GameObject boss;
+    [Header("Snake Settings")]
+    public GameObject snakePrefab;
+    public float snakeSpawnDelay = 4f;
+
     private void Start()
     {
         mainCamera = Camera.main;
@@ -23,6 +27,7 @@ public class RandomSpawner : MonoBehaviour
         GameManager.Instance.SetGameLevelActive(false);
         StartCoroutine(SpawnDiamonds());
         StartCoroutine(SpawnBoss());
+        StartCoroutine(SpawnSnakes());
     }
     public IEnumerator ShowBigDiamond()
     {
@@ -146,4 +151,28 @@ public class RandomSpawner : MonoBehaviour
         spawnedDiamond.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
         Destroy(spawnedDiamond, destroyDiamondsIntervalInSeconds);
     }
+    private IEnumerator SpawnSnakes()
+    {
+        while (true)
+        {
+            if (GameManager.Instance.IsGameActive && GameManager.Instance.IsGameLevelActive)
+            {
+                bool spawnFromLeft = Random.value > 0.5f;
+                Vector3 spawnViewport = spawnFromLeft ? new Vector3(0f, Random.Range(0.2f, 0.8f), 10f) : new Vector3(1f, Random.Range(0.2f, 0.8f), 10f);
+                Vector3 spawnWorldPos = mainCamera.ViewportToWorldPoint(spawnViewport);
+                GameObject snake = Instantiate(snakePrefab, spawnWorldPos, Quaternion.identity);
+
+                // אתחול כיוון
+                Vector3 direction = spawnFromLeft ? Vector3.right : Vector3.left;
+                snake.GetComponent<SnakeMover>().Initialize(direction);
+
+                yield return new WaitForSeconds(snakeSpawnDelay);
+            }
+            else
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+        }
+    }
+
 }
