@@ -32,10 +32,14 @@ public class TutorialManager : MonoBehaviour
     private GameObject bigDiamondInstance;
     private string[] tutorialSteps = new string[]
     {
-        "These are the diamonds you will see in the game.",
+        "היהלומים שיופיעו במהלך המשחק.",
+        "צבע הילום שצריך לזכור",
+        "בשלב הבא המשחק מתחיל, בהצלחה!",
+    };
+    /*"These are the diamonds you will see in the game.",
         "Remember and collect only this color.",
         "Next step the game begins, Let’s try playing!",
-    };
+     */
     private Camera mainCamera;
     GameObject diamondTutorial;
     [SerializeField] private TMP_Text textScore;
@@ -202,7 +206,7 @@ public class TutorialManager : MonoBehaviour
     public void SetTextScore(int score)
     {
          Debug.Log("🎯 Score Updated: " + score);
-        textScore.text = $"ניקוד: {score}";
+        textScore.text = $"Score: {score}";
     }
     public void EndTutorial()
     {

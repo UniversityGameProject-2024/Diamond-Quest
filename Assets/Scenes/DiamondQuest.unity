@@ -290,8 +290,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 18.162724, y: -11.705028}
-  m_SizeDelta: {x: 30.71, y: 40.22}
+  m_AnchoredPosition: {x: 18.121325, y: -11.705028}
+  m_SizeDelta: {x: 30.64, y: 40.22}
   m_Pivot: {x: 0.591427, y: 0.70897496}
 --- !u!114 &172208672
 MonoBehaviour:
@@ -316,7 +316,7 @@ MonoBehaviour:
   m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 66b31bda6414e964ca7d6a793609e82a, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: -2673541851043351573, guid: 66b31bda6414e964ca7d6a793609e82a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1330,8 +1330,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: " \u05E0\u05D9\u05E7\u05D5\u05D3: 0"
-  m_isRightToLeft: 1
+  m_text: 'Score: 0'
+  m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 66b31bda6414e964ca7d6a793609e82a, type: 2}
   m_sharedMaterial: {fileID: -2673541851043351573, guid: 66b31bda6414e964ca7d6a793609e82a, type: 2}
   m_fontSharedMaterials: []
@@ -1530,7 +1530,7 @@ GameObject:
   - component: {fileID: 747857937}
   - component: {fileID: 747857938}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text (TMP) Guide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1583,18 +1583,23 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'You are Jones the adventurer! Your goal is to collect as many diamonds
-    as possible.
-
-    Your boss, Mr. Dean, will tell you when to take a break from
-    collecting! When he raises his hand- stop collecting! When he lowers his hand-
-    continue!
-
-    When the game starts, you will see a diamond for 3 seconds. Your
-    job is to remember what color it is and collect only diamonds of that color!'
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  m_text: "\u05D0\u05EA\u05D4 \u05D2'\u05D5\u05E0\u05E1 \u05D4\u05D4\u05E8\u05E4\u05EA\u05E7\u05DF
+    \u05DE\u05D8\u05E8\u05EA\u05DA \u05D4\u05D9\u05D0 \u05DC\u05D0\u05E1\u05D5\u05E3
+    \u05DB\u05DE\u05D4 \u05E9\u05D9\u05D5\u05EA\u05E8 \u05D9\u05D4\u05DC\u05D5\u05DE\u05D9\u05DD\r\n\r\n\u05D4\u05D1\u05D5\u05E1
+    \u05E9\u05DC\u05DA, \u05DE\u05E8 \u05D3\u05D9\u05DF, \u05D9\u05D2\u05D9\u05D3
+    \u05DC\u05DA \u05DE\u05EA\u05D9 \u05DE\u05D5\u05EA\u05E8 \u05DC\u05DA \u05DC\u05D4\u05E4\u05E1\u05D9\u05E7.
+    \u05DB\u05D0\u05E9\u05E8 \u05D4\u05D5\u05D0 \u05D9\u05E8\u05D9\u05DD \u05D0\u05EA
+    \u05D9\u05D3\u05D5 - \u05E2\u05E6\u05D5\u05E8 \u05D5\u05DB\u05D0\u05E9\u05E8
+    \u05D4\u05D5\u05D0 \u05D9\u05D5\u05E8\u05D9\u05D3 \u05D0\u05D5\u05EA\u05D4- \u05D4\u05DE\u05E9\u05DA.\r\n\r\n\u05DB\u05E9\u05D9\u05EA\u05D7\u05D9\u05DC
+    \u05D4\u05DE\u05E9\u05D7\u05E7, \u05D0\u05EA\u05D4 \u05EA\u05E8\u05D0\u05D4 \u05D9\u05D4\u05DC\u05D5\u05DD
+    \u05DC\u05DE\u05E9\u05DA 3 \u05E9\u05E0\u05D9\u05D5\u05EA. \u05DE\u05E9\u05D9\u05DE\u05EA\u05DA
+    \u05D4\u05D9\u05D0 \u05DC\u05D6\u05DB\u05D5\u05E8 \u05D0\u05EA \u05D4\u05E6\u05D1\u05E2
+    \u05E9\u05DC \u05D4\u05D9\u05D4\u05DC\u05D5\u05DD, \u05D5\u05DC\u05D0\u05E1\u05D5\u05E3
+    \u05E8\u05E7 \u05D9\u05D4\u05DC\u05D5\u05DE\u05D9\u05DD \u05D1\u05E6\u05D1\u05E2
+    \u05D4\u05D6\u05D4."
+  m_isRightToLeft: 1
+  m_fontAsset: {fileID: 11400000, guid: 66b31bda6414e964ca7d6a793609e82a, type: 2}
+  m_sharedMaterial: {fileID: -2673541851043351573, guid: 66b31bda6414e964ca7d6a793609e82a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1625,7 +1630,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 11
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -1696,8 +1701,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 75.77, y: -140.77}
-  m_SizeDelta: {x: 151.54, y: 40.22}
+  m_AnchoredPosition: {x: 76.015, y: -140.77}
+  m_SizeDelta: {x: 152.03, y: 40.22}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &752976659
 MonoBehaviour:
@@ -1722,7 +1727,7 @@ MonoBehaviour:
   m_text: New Text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 66b31bda6414e964ca7d6a793609e82a, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: -2673541851043351573, guid: 66b31bda6414e964ca7d6a793609e82a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3133,8 +3138,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 75.77, y: -180.99}
-  m_SizeDelta: {x: 151.54, y: 40.22}
+  m_AnchoredPosition: {x: 76.015, y: -180.99}
+  m_SizeDelta: {x: 152.03, y: 40.22}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1344325037
 MonoBehaviour:
@@ -3159,7 +3164,7 @@ MonoBehaviour:
   m_text: New Text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 66b31bda6414e964ca7d6a793609e82a, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: -2673541851043351573, guid: 66b31bda6414e964ca7d6a793609e82a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3541,8 +3546,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 21.555996, y: -100.55}
-  m_SizeDelta: {x: 30.71, y: 40.22}
+  m_AnchoredPosition: {x: 21.506863, y: -100.55}
+  m_SizeDelta: {x: 30.64, y: 40.22}
   m_Pivot: {x: 0.7019211, y: 0.5}
 --- !u!114 &1791249267
 MonoBehaviour:
@@ -3567,7 +3572,7 @@ MonoBehaviour:
   m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 66b31bda6414e964ca7d6a793609e82a, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: -2673541851043351573, guid: 66b31bda6414e964ca7d6a793609e82a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3985,8 +3990,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 20.364506, y: -60.33}
-  m_SizeDelta: {x: 30.71, y: 40.22}
+  m_AnchoredPosition: {x: 20.318087, y: -60.33}
+  m_SizeDelta: {x: 30.64, y: 40.22}
   m_Pivot: {x: 0.66312295, y: 0.5}
 --- !u!114 &2025826197
 MonoBehaviour:
@@ -4011,7 +4016,7 @@ MonoBehaviour:
   m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 66b31bda6414e964ca7d6a793609e82a, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: -2673541851043351573, guid: 66b31bda6414e964ca7d6a793609e82a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
