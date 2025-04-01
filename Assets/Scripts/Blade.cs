@@ -67,12 +67,14 @@ public class Blade : MonoBehaviour
                                     GameManager.Instance.AddScore(1);
                                     GameManager.Instance.AddToCountGoodDiamondsCut(1);
                                     GameManager.Instance.PlaySound(true); //  צליל הצלחה
+                                    GameManager.Instance.ResetMistakeCount();
                                 }
                                 else
                                 {
                                     GameManager.Instance.AddScore(-1);
                                     scoreBad++;
                                     GameManager.Instance.AddToCountBadDiamondsCut(1);
+                                    GameManager.Instance.HandleMistake();
                                     GameManager.Instance.PlaySound(false); //  צליל כישלון
                                 }
                             }

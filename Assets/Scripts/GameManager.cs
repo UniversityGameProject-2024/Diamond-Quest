@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     //Spawned good diamonds are spawned diamonds that have of the same 
     //color as the big diamond displayed before they were displayed
     private int countSpawnedGoodDiamonds = 0;
+    private int currentMistakeCount = 0;
     private Color bigDiamondColor;
     [Header("Audio Clips")]
     public AudioClip successSound;
@@ -35,6 +36,15 @@ public class GameManager : MonoBehaviour
     [Header("UI Elements")]
     public GameObject endGamePanel;
     public GameObject menuPanel;
+
+    [Header("Reminder Panel")]
+    public GameObject reminderPanel;
+    [Tooltip("How long panel be shown")]
+    [SerializeField] private float reminderTimeout;
+    [Tooltip("How many mistakes user can do before guide text")]
+    [SerializeField] private float mistakeCount;
+    public TextMeshProUGUI reminderText;
+
 
     // public TextMeshProUGUI txtScore;
     // public TextMeshProUGUI txtGoodDiamondsCut;
@@ -139,6 +149,44 @@ public class GameManager : MonoBehaviour
     {
         countBadDiamondsCut = val;
     }
+    public void HandleMistake()
+    {
+        currentMistakeCount++;
+
+        if (currentMistakeCount >= mistakeCount)
+        {
+            ShowReminderPanel();
+            currentMistakeCount = 0;
+        }
+    }
+
+    private void ShowReminderPanel()
+    {
+        if (reminderText != null && reminderPanel != null)
+        {
+            string hexColor = UnityEngine.ColorUtility.ToHtmlStringRGB(bigDiamondColor);
+            reminderText.text = $"<color=#{hexColor}>תזכורת!</color>";
+            reminderPanel.SetActive(true);
+            Debug.Log("🔔 Showing reminder panel!");
+            Invoke(nameof(HideReminderPanel), reminderTimeout);
+        }
+    }
+
+    private void HideReminderPanel()
+    {
+        if (reminderPanel != null)
+        {
+            reminderPanel.SetActive(false);
+            Debug.Log("❌ Hiding reminder panel.");
+        }
+    }
+    public void ResetMistakeCount()
+    {
+        currentMistakeCount = 0;
+        Debug.Log("✅ Mistake count reset.");
+    }
+
+
     public void SetCountGoodDiamondsCut(int val)
     {
         countGoodDiamondsCut = val;
