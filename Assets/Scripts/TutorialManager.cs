@@ -295,6 +295,8 @@ public class TutorialManager : MonoBehaviour
 
         txtCountDiamondsCutWhenBossNotAllowed.text =
             $"Diamonds cut when boss not allowed: {GameManager.Instance.CountDiamondsCutWhenBossNotAllowed}";
+        
+        FindObjectOfType<UserLoginManager>().SaveScore(1234);
 
         Debug.Log("Game Over!");
       //  GameManager.Instance.EndGame();
