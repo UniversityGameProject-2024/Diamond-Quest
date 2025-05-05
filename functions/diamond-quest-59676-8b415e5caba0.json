@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "diamond-quest-59676",
+  "private_key_id": "8b415e5caba03ad18898365da568b6c3f73ba97d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDdEm7V/WUry5nj\nDHr5ym5xz/QsZBVqQdjEXUUj8F28ubow43366l5ZxGSt2F3v8VDOKfwIkjABwEPr\nGPu487wbGDINvpRNBZvKQQui8HJP4f7HCYoolNlCKzcxi7yc5iXxvAq3PUJheTUW\ng7KxZJAfd2qGue5AtDYjow5WwV3GXmXVLDzeH0fjwnnQm3FuTUgo7QH/5Gc3Q6+E\nLvSgTkPW8pw65REUbWEjHVOPZTZyPSjuH3VZXolkjm1s9hV0vLFobqIEBRaPeRNz\njIe6AHemJPLKS+5te/O+bXDhfxv8xsWNrb2W3hmkXSGkvxe154fwWcHNIwFrSdip\nY3K8SjQVAgMBAAECggEALC15UbEEDTbwJyPA1XcDECJe6JoNf4DuGPuMjAyGJuc0\nkn17mO9J8IVjGyyARSlDnRddwra3+jmaOPpynzixz/ZLVlzN1QB4a/gIo8SKC3Wd\njNfWsJpiOitZqcCDbhU94utRduG6iLEIj1m9FV8DwA4EjyzLtElvAjsc6/BTVYb7\nassUIuhC8zLnNwVq0hHQ5yyOk0mR1veuCSUFcAHV4iWMd/E+SzbQsdeyXmCfiAyq\nHrJ1oR9Y42gb2bBWC4ET81d2cq4UBVGjtjbr9O26n5XSf1rncYK1sd/3H3PjunCp\nLvMyD94TVXiI+oU5QQmOS8A3eBdBmNs8vkydvnu4hwKBgQD9qnHPHBdpus9v9Qm+\n45bx1x64BsB7pS55imZQ8Z4mgZXSvl7PTySQj3H/0xi2SrF0Ibe6SLLP1GmkitAk\ni9EQ81PFeYBeTZGdvl1/yQTkmgLwwlSJoDh2Ng9+ACJdIoMIYkkSE6jXGQTAcXw4\nMmO7xD91mXII2eHYinDx4IzYMwKBgQDfGzU0xLDvNLW6+fZjYDvG198BuFGl/dsi\n0qitl53tlHjQxJdCJJMvEyEBxcyG3ZXFDf6KcxnpiWZjzwmDzOqo+0nWaQYWyiyj\nAuGZ5zwbxiKmwIDzjoYc7cFWKYVDalHmAt/Or75hMYTDOnheUjXxvGtlDNi578EL\nuzDbrDialwKBgH8+v+ZfthLwhdwodCIQcoiQG7W+lVGw85Y+acLS4T15pZlYq6Cc\nl7/4ZPwqfWv8HfYeb9Z/X0tHx1Kl23FpvY8eMHiP0Wf8yz3w32AZi13NMAprwRJk\nj84kojLXiGVlyYssGnF58SktQKf0hZZ/GG55LEgmmAB+o38HO07qEFznAoGAbZA2\n+Mr++PmxpTjLvtGriWLJqVaTAilATEGXhGhIrjuTeTKR9XFwtlV2iCBS6Ig43KSa\ns/MCbqWDGtC5o3gmZQXCpQC+dMKkWQk5MRNVeW475hfzO6hqRBqeL2oEf67euU4A\nCshTffeLczRrmCZXR3d4Zg+A/w62hsROohJZWdECgYEAtbXoxm2Q1OFiXwnlKSyP\nKQPLIJKsAP4qaf5um4z561Erc5/uVQcMQfpDGbIEcjTG+hHUD81Z1ayZTX65M2em\nMefEO/NaixRGn/1BjMyJ6fuFPsBem5qGKbKGH/bK2kSPa4UyQHUmzYiIf9FEkgN5\npgmt/U+Fr468fRERmbZjYyY=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-sheet-writer-124@diamond-quest-59676.iam.gserviceaccount.com",
+  "client_id": "108944761418174497005",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-sheet-writer-124%40diamond-quest-59676.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

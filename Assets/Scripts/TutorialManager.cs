@@ -1,11 +1,8 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine.UI;
-using System;
 using UnityEngine.SceneManagement;
-
 
 public class TutorialManager : MonoBehaviour
 {
@@ -21,74 +18,60 @@ public class TutorialManager : MonoBehaviour
     public GameObject skipButton;
     public Button backToMenuButton;
     public GameObject endGamePanel;
+    public GameObject playAgainButton; // ← גרור את הכפתור מהאינספקטור
 
 
-    private int stepIndex = 0;
-    private bool tutorialFinished = false;
-    private Vector3 startPosition = new Vector3(0.5f, 0.5f, 10f);
-    private GameObject[] spawnedDiamonds;
-    private bool bigDiamondExits = false;
-    private RandomSpawner spawner;
-    private GameObject bigDiamondInstance;
-    private string[] tutorialSteps = new string[]
-    {
-        "היהלומים שיופיעו במהלך המשחק.",
-        "צבע הילום שצריך לזכור",
-        "בשלב הבא המשחק מתחיל, בהצלחה!",
-    };
-    /*"These are the diamonds you will see in the game.",
-        "Remember and collect only this color.",
-        "Next step the game begins, Let’s try playing!",
-     */
-    private Camera mainCamera;
-    GameObject diamondTutorial;
-    [SerializeField] private TMP_Text textScore;
     public TextMeshProUGUI txtScoreTable;
     public TextMeshProUGUI txtGoodDiamondsCut;
     public TextMeshProUGUI txtBadDiamondsCut;
     public TextMeshProUGUI txtCountSpawnedGoodDiamonds;
     public TextMeshProUGUI txtCountDiamondsCutWhenBossNotAllowed;
-
+    [SerializeField] private TMP_Text textScore;
     public TMP_Text TextScore => textScore;
 
-
-
+    private UserLoginManager loginManager;
     private RandomSpawner randomSpawnerScript;
+    private Camera mainCamera;
+    private GameObject diamondTutorial;
+    private GameObject[] spawnedDiamonds;
+    private GameObject bigDiamondInstance;
+    private int stepIndex = 0;
+    private bool tutorialFinished = false;
+    private bool bigDiamondExits = false;
+
+    private string[] tutorialSteps = new string[]
+    {
+        "היהלומים שיופיעו במהלך המשחק.",
+        "צבע הילום שצריך לזכור",
+        "בשלב הבא המשחק מתחיל, בהצלחה!"
+    };
 
     private void Awake()
     {
         if (Instance == null)
-        {
             Instance = this;
-        }
         else
-        {
             Destroy(gameObject);
-        }
-    }
-    public void Update()
-    {
-        if (diamondTutorial == null)
-        {
-            nextButton.GetComponent<Button>().interactable = true;
-        }
     }
 
-    public void Start()
+    private void Start()
     {
-
-        // if (backToMenuButton != null)
-        // {
-        //     backToMenuButton.gameObject.SetActive(false);
-        // }
+        loginManager = FindObjectOfType<UserLoginManager>();
+        if (loginManager == null)
+            Debug.LogError("❌ לא נמצא UserLoginManager – שמירת ניקוד תיכשל!");
 
         StartTutorial();
+    }
+
+    private void Update()
+    {
+        if (diamondTutorial == null)
+            nextButton.GetComponent<Button>().interactable = true;
     }
 
     public void StartTutorial()
     {
         mainCamera = Camera.main;
-
         diamondTutorial = GameObject.Find("Diamond Tutorial");
         stepIndex = 0;
         randomSpawnerScript = GameObject.Find("RandomSpawner").GetComponent<RandomSpawner>();
@@ -98,133 +81,115 @@ public class TutorialManager : MonoBehaviour
         GameManager.Instance.SetGameActive(false);
         nextButton.GetComponent<Button>().interactable = false;
     }
-    private void SpawnBigDaimonds()
-    {
-        if (bigDiamondExits)
-        {
-            return;
-        }
-        bigDiamondExits = true;
-        GameObject diamondPrefab = diamondPrefabs[UnityEngine.Random.Range(0, diamondPrefabs.Length)];
-        Vector3 centerScreenPosition = new Vector3(0.5f, 0.5f, 10f);
-        Vector3 worldPosition = mainCamera.ViewportToWorldPoint(centerScreenPosition);
-        Quaternion fixedRotation = Quaternion.Euler(-30f, 1f, 1f);
-        bigDiamondInstance = Instantiate(diamondPrefab, worldPosition, fixedRotation);
-        bigDiamondInstance.transform.localScale = new Vector3(3f, 3f, 3f);
-    }
+
     private void SpawnAllDiamonds()
     {
-        if (spawnedDiamonds != null)
-            return;
+        if (spawnedDiamonds != null) return;
+
         spawnedDiamonds = new GameObject[diamondPrefabs.Length];
-        Camera mainCamera = Camera.main;
-        if (mainCamera == null)
-        {
-            return;
-        }
         Vector3 screenCenter = mainCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 5f));
         float spacing = 4f;
+
         for (int i = 0; i < diamondPrefabs.Length; i++)
         {
             Vector3 spawnPos = screenCenter + new Vector3((i - diamondPrefabs.Length / 2) * spacing, 0, 0);
-            Quaternion rotation = Quaternion.Euler(-30f, 0f, 0f);
-            GameObject diamond = Instantiate(diamondPrefabs[i], spawnPos, rotation);
+            GameObject diamond = Instantiate(diamondPrefabs[i], spawnPos, Quaternion.Euler(-30f, 0f, 0f));
             diamond.transform.localScale = Vector3.one * 2f;
-            DiamondLabel label = diamond.AddComponent<DiamondLabel>();
+            diamond.AddComponent<DiamondLabel>();
             spawnedDiamonds[i] = diamond;
-
-            Debug.Log($"✅ Spawned Diamond: {diamond.name} at {spawnPos}");
         }
     }
+
+    private void SpawnBigDaimonds()
+    {
+        if (bigDiamondExits) return;
+        bigDiamondExits = true;
+
+        GameObject diamondPrefab = diamondPrefabs[Random.Range(0, diamondPrefabs.Length)];
+        Vector3 worldPosition = mainCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 10f));
+        bigDiamondInstance = Instantiate(diamondPrefab, worldPosition, Quaternion.Euler(-30f, 1f, 1f));
+        bigDiamondInstance.transform.localScale = new Vector3(3f, 3f, 3f);
+    }
+
     public void NextStep()
     {
         if (tutorialFinished) return;
         stepIndex++;
 
-        Debug.Log($"StepIndex={stepIndex}");
         if (stepIndex > tutorialSteps.Length)
         {
             EndTutorial();
+            return;
         }
-        else
-        {
-            UpdateTutorialText();
-        }
+
+        UpdateTutorialText();
+
         if (stepIndex == 1)
-        {
             SpawnAllDiamonds();
-        }
+
         if (stepIndex == 2)
         {
             foreach (GameObject diamond in spawnedDiamonds)
-            {
                 Destroy(diamond);
-            }
             SpawnBigDaimonds();
         }
+
         if (stepIndex == 3)
         {
             if (bigDiamondInstance != null)
-            {
                 Destroy(bigDiamondInstance);
-                bigDiamondInstance = null;
-            }
             Invoke("DeleteTutorialText", 5f);
             StartCoroutine(SpawnDiamonds());
         }
+
         if (stepIndex == 4)
         {
-            GameObject[] smallDiamonds = GameObject.FindGameObjectsWithTag("Small Diamond");
-            foreach (GameObject smallDiamond in smallDiamonds)
-            {
-                Destroy(smallDiamond);
-            }
+            foreach (GameObject d in GameObject.FindGameObjectsWithTag("Small Diamond"))
+                Destroy(d);
         }
     }
-    private void DeleteTutorialText()
-    {
-        tutorialText.text = "";
-    }
+
     private IEnumerator SpawnDiamonds()
     {
-        int countSpawnedDiamonds = 0;
         while (GameManager.Instance.IsTutorialActive)
         {
-            countSpawnedDiamonds++;
             randomSpawnerScript.SpawnRandomDiamondForTutorial();
             yield return new WaitForSeconds(1f);
         }
     }
+
+    private void DeleteTutorialText()
+    {
+        tutorialText.text = "";
+    }
+
     public void SkipTutorial()
     {
         EndTutorial();
     }
+
     private void UpdateTutorialText()
     {
         tutorialText.text = tutorialSteps[stepIndex - 1];
     }
+
     public void SetTextScore(int score)
     {
-         Debug.Log("🎯 Score Updated: " + score);
         textScore.text = $"Score: {score}";
     }
+
     public void EndTutorial()
     {
-        if (GameManager.Instance == null)
-        {
-            return;
-        }
-        GameObject[] smallDiamonds = GameObject.FindGameObjectsWithTag("Small Diamond");
-        foreach (GameObject smallDiamond in smallDiamonds)
-        {
-            Destroy(smallDiamond);
-        }
+        if (GameManager.Instance == null) return;
+
+        foreach (GameObject d in GameObject.FindGameObjectsWithTag("Small Diamond"))
+            Destroy(d);
+
         tutorialPanel.SetActive(false);
         GameManager.Instance.SetTutorialActive(false);
         GameManager.Instance.SetGameActive(true);
         GameManager.Instance.SetGameLevelActive(false);
-        // New game will end in 300 seconds (30 seconds for testing)
-        Invoke("EndGame", 300f);
+        Invoke("EndGame", 30f);
 
         GameManager.Instance.SetScore(0);
         GameManager.Instance.SetCountGoodDiamondsCut(0);
@@ -232,73 +197,100 @@ public class TutorialManager : MonoBehaviour
 
         GameObject gameOverPanel = GameObject.Find("GameOverPanel");
         if (gameOverPanel != null)
-        {
             gameOverPanel.SetActive(false);
-        }
+
         BigDiamond.hasSpawned = false;
         StartCoroutine(randomSpawnerScript.ShowBigDiamond());
+
         if (backToMenuButton != null)
-        {
             backToMenuButton.gameObject.SetActive(true);
-        }
-
-        // // -------------------------
-
-        // Debug.Log("Finding BackToMenuButton");
-        // Button btnMainMenu = GameObject.Find("BackToMenuButton")?.GetComponent<Button>();
-        // Debug.Log($"btnMainMenu={btnMainMenu}");
-        // if (btnMainMenu != null)
-        // {
-        //     Debug.Log("Adding listener to btnMainMenu");
-        //     btnMainMenu.onClick.RemoveAllListeners();
-        //     btnMainMenu.onClick.AddListener(GameManager.Instance.LoadMainMenu);
-        // }
-
-
-
     }
+
     public void LoadMainMenu()
     {
-        //menuPanel.SetActive(true);
-       // SceneManager.LoadScene("MeinMenu");
-         if (GameManager.Instance.IsGameActive) // ✅ הכפתור פועל רק כשהמשחק פעיל
-        {
-            Debug.Log(" Returning to Main Menu...");
+      //  if (GameManager.Instance.IsGameActive)
             SceneManager.LoadScene("MainMenu");
-        }
-        else
-        {
+      //  else
             Debug.Log("⚠️ Cannot return to menu before the tutorial is finished!");
-        }
-
     }
+
     private void EndGame()
     {
         GameManager.Instance.SetGameActive(false);
         endGamePanel.SetActive(true);
-        Debug.Log("📌 Resetting table values...");
-        txtScoreTable.text = "0";
-        txtGoodDiamondsCut.text = "0";
-        txtBadDiamondsCut.text = "0";
-        txtCountSpawnedGoodDiamonds.text = "0";
-        if (txtScoreTable != null)
-            txtScoreTable.text = "Score: " + GameManager.Instance.GetScore();
 
-        if (txtGoodDiamondsCut != null)
-            txtGoodDiamondsCut.text = "Good Diamonds cut: " + GameManager.Instance.CountGoodDiamondsCut;
+        txtScoreTable.text = "Score: " + GameManager.Instance.GetScore();
+        txtGoodDiamondsCut.text = "Good Diamonds cut: " + GameManager.Instance.CountGoodDiamondsCut;
+        txtBadDiamondsCut.text = "Bad Diamonds cut: " + GameManager.Instance.CountBadDiamondsCut;
 
-        if (txtBadDiamondsCut != null)
-            txtBadDiamondsCut.text = "Bad Diamonds cut: " + GameManager.Instance.CountBadDiamondsCut;
-
-        int missedGoodDiamonds = GameManager.Instance.CountSpawnedGoodDiamonds - GameManager.Instance.CountGoodDiamondsCut;
-        txtCountSpawnedGoodDiamonds.text = $"Missed {missedGoodDiamonds} out of {GameManager.Instance.CountSpawnedGoodDiamonds} good diamonds";
+        int missed = GameManager.Instance.CountSpawnedGoodDiamonds - GameManager.Instance.CountGoodDiamondsCut;
+        txtCountSpawnedGoodDiamonds.text = $"Missed {missed} out of {GameManager.Instance.CountSpawnedGoodDiamonds} good diamonds";
 
         txtCountDiamondsCutWhenBossNotAllowed.text =
             $"Diamonds cut when boss not allowed: {GameManager.Instance.CountDiamondsCutWhenBossNotAllowed}";
-        
-        FindObjectOfType<UserLoginManager>().SaveScore(1234);
+
+        if (loginManager != null)
+        {
+            loginManager.SaveFullScoreData(
+                GameManager.Instance.GetScore(),
+                GameManager.Instance.CountGoodDiamondsCut,
+                GameManager.Instance.CountBadDiamondsCut,
+                GameManager.Instance.CountSpawnedGoodDiamonds,
+                GameManager.Instance.CountDiamondsCutWhenBossNotAllowed
+            );
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ לא נשמרו תוצאות – loginManager לא אותחל.");
+        }
 
         Debug.Log("Game Over!");
-      //  GameManager.Instance.EndGame();
-    }    
+    }
+    public void ExitGameEarly()
+{
+    Debug.Log("🚪 שחקן יצא מהמשחק מוקדם");
+
+    // עצור את המשחק
+    GameManager.Instance.SetGameActive(false);
+
+    // הצג את פאנל הסיום (הטבלה)
+    if (endGamePanel != null)
+        endGamePanel.SetActive(true);
+
+    // עדכון הטקסטים בטבלה
+    txtScoreTable.text = "Score: " + GameManager.Instance.GetScore();
+    txtGoodDiamondsCut.text = "Good Diamonds cut: " + GameManager.Instance.CountGoodDiamondsCut;
+    txtBadDiamondsCut.text = "Bad Diamonds cut: " + GameManager.Instance.CountBadDiamondsCut;
+
+    int missedGoodDiamonds = GameManager.Instance.CountSpawnedGoodDiamonds - GameManager.Instance.CountGoodDiamondsCut;
+    txtCountSpawnedGoodDiamonds.text = $"Missed {missedGoodDiamonds} out of {GameManager.Instance.CountSpawnedGoodDiamonds} good diamonds";
+
+    txtCountDiamondsCutWhenBossNotAllowed.text =
+        $"Diamonds cut when boss not allowed: {GameManager.Instance.CountDiamondsCutWhenBossNotAllowed}";
+
+    // שמירת ניקוד בפיירבייס
+    var loginManager = FindObjectOfType<UserLoginManager>();
+    if (loginManager != null)
+    {
+        loginManager.SaveFullScoreData(
+            GameManager.Instance.GetScore(),
+            GameManager.Instance.CountGoodDiamondsCut,
+            GameManager.Instance.CountBadDiamondsCut,
+            GameManager.Instance.CountSpawnedGoodDiamonds,
+            GameManager.Instance.CountDiamondsCutWhenBossNotAllowed
+        );
+    }
+    else
+    {
+        Debug.LogWarning("⚠️ לא נמצא UserLoginManager – לא נשמר ניקוד");
+    }
+    if (playAgainButton != null)
+        playAgainButton.SetActive(false);
+
+
+    // מעבר לתפריט הראשי לאחר 2 שניות
+    Invoke("LoadMainMenu", 5f);
+}
+
+
 }
