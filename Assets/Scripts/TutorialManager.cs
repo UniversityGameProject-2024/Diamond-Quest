@@ -39,6 +39,8 @@ public class TutorialManager : MonoBehaviour
     private bool tutorialFinished = false;
     private bool bigDiamondExits = false;
 
+    [SerializeField] private float gameDuration = 300f;
+
     private string[] tutorialSteps = new string[]
     {
         "היהלומים שיופיעו במהלך המשחק.",
@@ -192,7 +194,7 @@ public class TutorialManager : MonoBehaviour
         GameManager.Instance.SetTutorialActive(false);
         GameManager.Instance.SetGameActive(true);
         GameManager.Instance.SetGameLevelActive(false);
-        Invoke("EndGame", 30f);
+        Invoke("EndGame", gameDuration);
 
         GameManager.Instance.SetScore(0);
         GameManager.Instance.SetCountGoodDiamondsCut(0);

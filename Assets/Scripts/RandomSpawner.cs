@@ -1,4 +1,4 @@
-using UnityEngine;
+ן»¿using UnityEngine;
 using System.Collections;
 
 public class RandomSpawner : MonoBehaviour
@@ -13,12 +13,15 @@ public class RandomSpawner : MonoBehaviour
     private Camera mainCamera;
     [Header("Stop Sign / Boss")]
     [SerializeField] public GameObject prefabBoss;
+    [Tooltip("When boss appears")]
     [SerializeField] private float bossSpawnTime = 10;
     [SerializeField] private float bossDestroy = 5;
     GameObject boss;
     [Header("Snake Settings")]
     public GameObject snakePrefab;
     public float snakeSpawnDelay = 4f;
+    [Tooltip("Minimum score required before snakes appear")]
+    public int minScoreToSpawnSnakes = 10;
 
     private void Start()
     {
@@ -155,14 +158,18 @@ public class RandomSpawner : MonoBehaviour
     {
         while (true)
         {
-            if (GameManager.Instance.IsGameActive && GameManager.Instance.IsGameLevelActive)
+            if (GameManager.Instance.IsGameActive &&
+                GameManager.Instance.IsGameLevelActive &&
+                GameManager.Instance.GetScore() >= minScoreToSpawnSnakes)
             {
                 bool spawnFromLeft = Random.value > 0.5f;
-                Vector3 spawnViewport = spawnFromLeft ? new Vector3(0f, Random.Range(0.2f, 0.8f), 10f) : new Vector3(1f, Random.Range(0.2f, 0.8f), 10f);
+                Vector3 spawnViewport = spawnFromLeft
+                    ? new Vector3(0f, Random.Range(0.2f, 0.8f), 10f)
+                    : new Vector3(1f, Random.Range(0.2f, 0.8f), 10f);
+
                 Vector3 spawnWorldPos = mainCamera.ViewportToWorldPoint(spawnViewport);
                 GameObject snake = Instantiate(snakePrefab, spawnWorldPos, Quaternion.identity);
 
-                // אתחול כיוון
                 Vector3 direction = spawnFromLeft ? Vector3.right : Vector3.left;
                 snake.GetComponent<SnakeMover>().Initialize(direction);
 
