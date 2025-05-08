@@ -1,4 +1,4 @@
-ï»¿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class RandomSpawner : MonoBehaviour
@@ -162,7 +162,7 @@ public class RandomSpawner : MonoBehaviour
                 Vector3 spawnWorldPos = mainCamera.ViewportToWorldPoint(spawnViewport);
                 GameObject snake = Instantiate(snakePrefab, spawnWorldPos, Quaternion.identity);
 
-                // ××ª×—×•×œ ×›×™×•×•×Ÿ
+                // àúçåì ëéååï
                 Vector3 direction = spawnFromLeft ? Vector3.right : Vector3.left;
                 snake.GetComponent<SnakeMover>().Initialize(direction);
 

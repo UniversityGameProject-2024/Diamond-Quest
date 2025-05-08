@@ -56,6 +56,9 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
+        backToMenuButton.onClick.RemoveAllListeners();
+        backToMenuButton.onClick.AddListener(ExitGameEarly);
+
         loginManager = FindObjectOfType<UserLoginManager>();
         if (loginManager == null)
             Debug.LogError("❌ לא נמצא UserLoginManager – שמירת ניקוד תיכשל!");
@@ -211,11 +214,15 @@ public class TutorialManager : MonoBehaviour
       //  if (GameManager.Instance.IsGameActive)
             SceneManager.LoadScene("MainMenu");
       //  else
-            Debug.Log("⚠️ Cannot return to menu before the tutorial is finished!");
+         //   Debug.Log("⚠️ Cannot return to menu before the tutorial is finished!");
     }
-
+   
     private void EndGame()
     {
+        
+        backToMenuButton.onClick.RemoveAllListeners(); // מסיר את כל הפעולות הקודמות
+        backToMenuButton.onClick.AddListener(LoadMainMenu); // מוסיף פעולה חדשה
+
         GameManager.Instance.SetGameActive(false);
         endGamePanel.SetActive(true);
 
@@ -251,7 +258,10 @@ public class TutorialManager : MonoBehaviour
     Debug.Log("🚪 שחקן יצא מהמשחק מוקדם");
 
     // עצור את המשחק
-    GameManager.Instance.SetGameActive(false);
+    if (backToMenuButton != null && backToMenuButton.gameObject.activeSelf)
+         backToMenuButton.gameObject.SetActive(false);
+
+
 
     // הצג את פאנל הסיום (הטבלה)
     if (endGamePanel != null)

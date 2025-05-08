@@ -465,8 +465,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u05D4\u05D9\u05E8\u05E9\u05DD"
   m_isRightToLeft: 1
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 66b31bda6414e964ca7d6a793609e82a, type: 2}
+  m_sharedMaterial: {fileID: -2673541851043351573, guid: 66b31bda6414e964ca7d6a793609e82a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1794,6 +1794,60 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1401802622}
   m_SourcePrefab: {fileID: 100100000, guid: a099ea79add61464dac0c90acf6e2133, type: 3}
+--- !u!1 &1225895832
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1225895834}
+  - component: {fileID: 1225895833}
+  m_Layer: 0
+  m_Name: LoginInitializer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1225895833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1225895832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f13411db5ccd7c42a07c08db6f01a3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  usernameInput: {fileID: 1784386994}
+  passwordInput: {fileID: 1058282489}
+  forgotPasswordText: {fileID: 1903169479}
+  registerErrorText: {fileID: 398863104}
+  loginButton: {fileID: 1239759344}
+  registerButton: {fileID: 1531955856}
+  loginPanel: {fileID: 1586763191}
+  playButton: {fileID: 1881766425}
+  exitButton: {fileID: 603098196}
+  forgotPasswordButton: {fileID: 123424918}
+--- !u!4 &1225895834
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1225895832}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1239759342
 GameObject:
   m_ObjectHideFlags: 0
@@ -3510,14 +3564,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6645b1ab17e9c384fba0c5f3d7b24655, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usernameInput: {fileID: 1784386994}
-  passwordInput: {fileID: 1058282489}
-  forgotPasswordText: {fileID: 1903169479}
-  loginButton: {fileID: 1239759344}
-  registerButton: {fileID: 1531955856}
-  loginPanel: {fileID: 1586763191}
-  playButton: {fileID: 1881766423}
-  exitButton: {fileID: 603098194}
+  usernameInput: {fileID: 0}
+  passwordInput: {fileID: 0}
+  forgotPasswordButton: {fileID: 0}
+  forgotPasswordText: {fileID: 0}
+  registerErrorText: {fileID: 0}
+  loginButton: {fileID: 0}
+  registerButton: {fileID: 0}
+  loginPanel: {fileID: 0}
+  playButton: {fileID: 0}
+  exitButton: {fileID: 0}
 --- !u!4 &2050801716
 Transform:
   m_ObjectHideFlags: 0
@@ -3694,3 +3750,4 @@ SceneRoots:
   - {fileID: 1177409374}
   - {fileID: 1764995971}
   - {fileID: 2050801716}
+  - {fileID: 1225895834}
