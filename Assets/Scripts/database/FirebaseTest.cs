@@ -1,4 +1,5 @@
-﻿using Firebase;
+﻿#if !UNITY_WEBGL
+using Firebase;
 using Firebase.Database;
 using Firebase.Extensions;
 using UnityEngine;
@@ -32,3 +33,4 @@ public class FirebaseTest : MonoBehaviour
         });
     }
 }
+#endif

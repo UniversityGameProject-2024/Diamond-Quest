@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+#if !UNITY_WEBGL
 using Firebase;
 using Firebase.Database;
 using Firebase.Extensions;
+#endif
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+
 
 public class UserLoginManager : MonoBehaviour
 {
@@ -23,7 +26,9 @@ public class UserLoginManager : MonoBehaviour
     public Button playButton;
     public Button exitButton;
 
+#if !UNITY_WEBGL
     private DatabaseReference dbRef;
+#endif
     private string currentUsername;
     public static UserLoginManager Instance => instance;
 
@@ -110,32 +115,29 @@ public class UserLoginManager : MonoBehaviour
 
     void Start()
     {
-        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
-        {
-            if (task.Result == DependencyStatus.Available)
-            {
-                dbRef = FirebaseDatabase.DefaultInstance.RootReference;
-            }
-            else
-            {
-                Debug.LogError("❌ Firebase error: " + task.Result);
-            }
-        });
+#if !UNITY_WEBGL
+    FirebaseApp
+      .CheckAndFixDependenciesAsync()
+      .ContinueWithOnMainThread(task =>
+    {
+        if (task.Result == DependencyStatus.Available)
+            dbRef = FirebaseDatabase.DefaultInstance.RootReference;
+        else
+            Debug.LogError("❌ Firebase error: " + task.Result);
+    });
+#else
+        // WebGL: אין SDK
+#endif
     }
+
 
     public void ResetLoginState()
     {
         currentUsername = null;
     }
 
-    public void OnLogin()
+    public async void OnLogin()
     {
-        if (dbRef == null)
-        {
-            Debug.LogError("❌ Firebase is not ready");
-            return;
-        }
-
         string username = usernameInput?.text.Trim();
         string password = passwordInput?.text;
 
@@ -145,34 +147,33 @@ public class UserLoginManager : MonoBehaviour
             return;
         }
 
-        dbRef.Child("users").Child(username).Child("password").GetValueAsync().ContinueWithOnMainThread(task =>
-        {
-            if (!task.Result.Exists)
-            {
-                Debug.LogWarning("⚠️ Username does not exist");
-            }
-            else
-            {
-                string storedPassword = task.Result.Value.ToString();
-                if (storedPassword == password)
-                {
-                    currentUsername = username;
-                    Debug.Log($"✅ Login successful: {username}");
-
-                    loginPanel?.SetActive(false);
-                    playButton?.gameObject.SetActive(true);
-                    exitButton?.gameObject.SetActive(true);
-
-                    playButton?.onClick.RemoveAllListeners();
-                    playButton?.onClick.AddListener(TryPlay);
-                }
-                else
-                {
-                    Debug.LogWarning("⚠️ Incorrect password");
-                }
-            }
-        });
+#if UNITY_WEBGL
+    string storedPassword = await FirebaseWebGL.GetPasswordAsync(username);
+    if (string.IsNullOrEmpty(storedPassword))
+    {
+        Debug.LogWarning("⚠️ Username does not exist or error occurred");
+        return;
     }
+
+    if (storedPassword == password)
+    {
+        currentUsername = username;
+        Debug.Log($"✅ Login successful (WebGL): {username}");
+        loginPanel?.SetActive(false);
+        playButton?.gameObject.SetActive(true);
+        exitButton?.gameObject.SetActive(true);
+    }
+    else
+    {
+        Debug.LogWarning("⚠️ Incorrect password (WebGL)");
+    }
+#else
+        // קוד מקורי
+#endif
+    }
+
+
+
 
     public void TryPlay()
     {
@@ -185,20 +186,13 @@ public class UserLoginManager : MonoBehaviour
         LoadGameScene();
     }
 
-    public void OnRegister()
+    public async void OnRegister()
     {
-        if (dbRef == null)
-        {
-            Debug.LogError("❌ Firebase is not ready");
-            return;
-        }
-
         string username = usernameInput?.text.Trim();
         string password = passwordInput?.text;
 
         if (string.IsNullOrWhiteSpace(username))
         {
-            Debug.Log("⛳ registerErrorText triggered – missing username");
             registerErrorText.text = "הכנס משתמש";
             registerErrorText.gameObject.SetActive(true);
             Invoke(nameof(ClearRegisterErrorText), 5f);
@@ -207,33 +201,32 @@ public class UserLoginManager : MonoBehaviour
         if (string.IsNullOrWhiteSpace(password))
         {
             registerErrorText.text = "הכנס סיסמה";
-        registerErrorText.gameObject.SetActive(true);
+            registerErrorText.gameObject.SetActive(true);
             Invoke(nameof(ClearRegisterErrorText), 5f);
             return;
         }
 
-        dbRef.Child("users").Child(username).GetValueAsync().ContinueWithOnMainThread(task =>
-        {
-            if (task.Result.Exists)
-            {
-                registerErrorText.text = "משתמש קיים";
-                Invoke(nameof(ClearRegisterErrorText), 5f);
-            }
-            else
-            {
-                dbRef.Child("users").Child(username).Child("password").SetValueAsync(password)
-                .ContinueWithOnMainThread(saveTask =>
-                {
-                    if (saveTask.IsCompleted)
-                        Debug.Log("✅ User registered successfully");
-                    else
-                        Debug.LogError("❌ Registration error: " + saveTask.Exception);
-                });
-            }
-        });
+#if UNITY_WEBGL
+    bool exists = await FirebaseWebGL.CheckUserExistsAsync(username);
+    if (exists)
+    {
+        registerErrorText.text = "משתמש קיים";
+        Invoke(nameof(ClearRegisterErrorText), 5f);
+        return;
     }
 
-    public void SaveFullScoreData(int score, int goodCut, int badCut, int spawnedGood, int bossCut)
+    bool success = await FirebaseWebGL.RegisterUserAsync(username, password);
+    if (success)
+        Debug.Log("✅ User registered successfully (WebGL)");
+    else
+        Debug.LogError("❌ Registration error (WebGL)");
+#else
+        // קוד מקורי
+#endif
+    }
+
+
+    public async void SaveFullScoreData(int score, int goodCut, int badCut, int spawnedGood, int bossCut)
     {
         if (string.IsNullOrEmpty(currentUsername))
         {
@@ -241,33 +234,21 @@ public class UserLoginManager : MonoBehaviour
             return;
         }
 
-        if (dbRef == null)
-        {
-            Debug.LogError("❌ Firebase not initialized");
-            return;
-        }
-
         string timestamp = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
         var scoreData = new Dictionary<string, object>
-        {
-            { "score", score },
-            { "goodDiamondsCut", goodCut },
-            { "badDiamondsCut", badCut },
-            { "spawnedGoodDiamonds", spawnedGood },
-            { "cutWhenBossNotAllowed", bossCut },
-            { "timestamp", timestamp }
-        };
+    {
+        { "score", score },
+        { "goodDiamondsCut", goodCut },
+        { "badDiamondsCut", badCut },
+        { "spawnedGoodDiamonds", spawnedGood },
+        { "cutWhenBossNotAllowed", bossCut },
+        { "timestamp", timestamp }
+    };
 
-        dbRef.Child("users").Child(currentUsername).Child("gameResults").Push().SetValueAsync(scoreData)
-            .ContinueWithOnMainThread(task =>
-            {
-                if (task.IsCompleted)
-                    Debug.Log($"✅ Score saved successfully for {currentUsername}");
-                else
-                    Debug.LogError("❌ Score saving error: " + task.Exception);
-            });
+        await FirebaseWebGL.SaveScoreAsync(currentUsername, scoreData);
     }
+
 
     public string GetCurrentUsername() => currentUsername;
 
@@ -276,7 +257,7 @@ public class UserLoginManager : MonoBehaviour
         SceneManager.LoadScene("DiamondQuest");
     }
 
-    public void OnForgotPassword()
+    public async void OnForgotPassword()
     {
         string username = usernameInput?.text.Trim();
 
@@ -287,22 +268,23 @@ public class UserLoginManager : MonoBehaviour
             return;
         }
 
-        dbRef.Child("users").Child(username).Child("password").GetValueAsync().ContinueWithOnMainThread(task =>
-        {
-            if (task.IsCompleted && task.Result.Exists)
-            {
-                string password = task.Result.Value.ToString();
-                string reversedPassword = ReverseDigits(password);
-                forgotPasswordText.text = reversedPassword;
-                Invoke(nameof(ClearForgotPasswordText), 5f);
-            }
-            else
-            {
-                forgotPasswordText.text = "משתמש לא קיים";
-                Invoke(nameof(ClearForgotPasswordText), 5f);
-            }
-        });
+#if UNITY_WEBGL
+    string password = await FirebaseWebGL.GetPasswordAsync(username);
+    if (!string.IsNullOrEmpty(password))
+    {
+        string reversedPassword = ReverseDigits(password);
+        forgotPasswordText.text = reversedPassword;
     }
+    else
+    {
+        forgotPasswordText.text = "משתמש לא קיים";
+    }
+    Invoke(nameof(ClearForgotPasswordText), 5f);
+#else
+        // קוד מקורי
+#endif
+    }
+
 
     void ClearForgotPasswordText()
     {
