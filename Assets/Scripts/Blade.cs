@@ -87,6 +87,10 @@ public class Blade : MonoBehaviour
                         GameObject[] smallDiamonds = GameObject.FindGameObjectsWithTag("Small Diamond");
                         foreach (GameObject smallDiamond in smallDiamonds)
                         {
+                            
+                          //  Color diamondColor = smallDiamond.material.color;
+                          //  if (GameManager.Instance.ColorsMatch(diamondColor, bigDiamondColor))
+                                
                             Destroy(smallDiamond);
                         }
                         StartCoroutine(WaitAndStartNewGameLevel());
