@@ -69,15 +69,16 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             //DontDestroyOnLoad(gameObject);
-
         }
         else
         {
             Destroy(gameObject);
             return;
         }
+
    }
     
+
     private void Start()
     {
         if (GetComponent<AudioSource>() == null)
@@ -91,6 +92,9 @@ public class GameManager : MonoBehaviour
         }
 
         audioSource.playOnAwake = false;
+
+
+
     }
 
 
@@ -179,7 +183,7 @@ public class GameManager : MonoBehaviour
     public void ResetMistakeCount()
     {
         currentMistakeCount = 0;
-        Debug.Log("Mistake count reset.");
+        Debug.Log("✅ Mistake count reset.");
     }
 
 

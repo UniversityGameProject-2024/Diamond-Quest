@@ -38,15 +38,13 @@ public class TutorialManager : MonoBehaviour
     private int stepIndex = 0;
     private bool tutorialFinished = false;
     private bool bigDiamondExits = false;
-    public static bool hasSeenTutorial = false;
 
-
-    [SerializeField] private float gameDuration = 30f;
+    [SerializeField] private float gameDuration = 300f;
 
     private string[] tutorialSteps = new string[]
     {
         "היהלומים שיופיעו במהלך המשחק.",
-        "צבע היהלום שצריך לזכור",
+        "צבע הילום שצריך לזכור",
         "בשלב הבא המשחק מתחיל, בהצלחה!"
     };
 
@@ -64,45 +62,11 @@ public class TutorialManager : MonoBehaviour
         backToMenuButton.onClick.AddListener(ExitGameEarly);
 
         loginManager = FindObjectOfType<UserLoginManager>();
-        randomSpawnerScript = GameObject.Find("RandomSpawner").GetComponent<RandomSpawner>(); // ← תוסיף את זה כאן
-
         if (loginManager == null)
             Debug.LogError("❌ לא נמצא UserLoginManager – שמירת ניקוד תיכשל!");
 
-        if (hasSeenTutorial)
-        {
-            StartCoroutine(DelayedEndTutorial());
-            return;
-        }
-
-        hasSeenTutorial = true;
-
         StartTutorial();
     }
-    public void RestartGame()
-{
-    // שמור סימון שראינו כבר את המדריך
-    hasSeenTutorial = true;
-
-    // במידת הצורך – הרוס GameManager אם הוא DontDestroyOnLoad
-    if (GameManager.Instance != null)
-        Destroy(GameManager.Instance.gameObject);
-
-    // טען את הסצנה מחדש
-    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-
-}
-public void RestartWithTutorial()
-{
-    hasSeenTutorial = false; // חוזר להפעיל את המדריך
-
-    if (GameManager.Instance != null)
-        Destroy(GameManager.Instance.gameObject);
-
-    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-}
-
-
 
     private void Update()
     {
@@ -115,7 +79,7 @@ public void RestartWithTutorial()
         mainCamera = Camera.main;
         diamondTutorial = GameObject.Find("Diamond Tutorial");
         stepIndex = 0;
-      //  randomSpawnerScript = GameObject.Find("RandomSpawner").GetComponent<RandomSpawner>();
+        randomSpawnerScript = GameObject.Find("RandomSpawner").GetComponent<RandomSpawner>();
 
         tutorialPanel.SetActive(true);
         GameManager.Instance.SetTutorialActive(true);
@@ -232,9 +196,9 @@ public void RestartWithTutorial()
         GameManager.Instance.SetGameLevelActive(false);
         Invoke("EndGame", gameDuration);
 
-    //    GameManager.Instance.SetScore(0);
-    //    GameManager.Instance.SetCountGoodDiamondsCut(0);
-    //    GameManager.Instance.SetCountBadDiamondsCut(0);
+        GameManager.Instance.SetScore(0);
+        GameManager.Instance.SetCountGoodDiamondsCut(0);
+        GameManager.Instance.SetCountBadDiamondsCut(0);
 
         GameObject gameOverPanel = GameObject.Find("GameOverPanel");
         if (gameOverPanel != null)
@@ -340,10 +304,5 @@ public void RestartWithTutorial()
     Invoke("LoadMainMenu", 5f);
 }
 
-private IEnumerator DelayedEndTutorial()
-{
-    yield return null;      // מחכה לפריים אחד
-    EndTutorial();          // קורא לפונקציה שאתה באמת רוצה להפעיל
-}
 
 }
