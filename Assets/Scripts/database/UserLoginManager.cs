@@ -25,6 +25,9 @@ public class UserLoginManager : MonoBehaviour
     public GameObject loginPanel;
     public Button playButton;
     public Button exitButton;
+    public GameObject HelpPanel;
+    public GameObject ErrorPanel;
+
 
 #if !UNITY_WEBGL
     private DatabaseReference dbRef;
@@ -43,7 +46,9 @@ public class UserLoginManager : MonoBehaviour
         GameObject loginPanel,
         Button playButton,
         Button exitButton,
-        TMP_Text registerErrorText)
+        TMP_Text registerErrorText,
+        GameObject HelpPanel,
+        GameObject ErrorPanel)
     {
         this.usernameInput = usernameInput;
         this.passwordInput = passwordInput;
@@ -55,6 +60,8 @@ public class UserLoginManager : MonoBehaviour
         this.loginPanel = loginPanel;
         this.playButton = playButton;
         this.exitButton = exitButton;
+        this.HelpPanel = HelpPanel;
+        this.ErrorPanel = ErrorPanel;
 
         usernameInput?.onValueChanged.AddListener(value => {
             if (string.IsNullOrWhiteSpace(value))
@@ -85,7 +92,7 @@ public class UserLoginManager : MonoBehaviour
         {
             usernameInput.text = string.Empty;
             passwordInput.text = string.Empty;
-            forgotPasswordText.text = "שכחתי סיסמה";
+            //forgotPasswordText.text = "שכחתי סיסמה";
             loginPanel?.SetActive(false);
             playButton?.gameObject.SetActive(true);
             exitButton?.gameObject.SetActive(true);
@@ -94,24 +101,25 @@ public class UserLoginManager : MonoBehaviour
         {
             usernameInput.text = string.Empty;
             passwordInput.text = string.Empty;
-            forgotPasswordText.text = "שכחתי סיסמה";
+            //forgotPasswordText.text = "שכחתי סיסמה";
             loginPanel?.SetActive(true);
             playButton?.gameObject.SetActive(false);
             exitButton?.gameObject.SetActive(false);
+
         }
     }
     private void Awake()
-{
-    if (instance == null)
     {
-        instance = this;
-        DontDestroyOnLoad(gameObject); // שורד מעבר סצנות
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject); // שורד מעבר סצנות
+        }
+        else
+        {
+            Destroy(gameObject); // הורס עותקים נוספים
+        }
     }
-    else
-    {
-        Destroy(gameObject); // הורס עותקים נוספים
-    }
-}
 
     void Start()
     {
@@ -144,29 +152,39 @@ public class UserLoginManager : MonoBehaviour
         if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
         {
             Debug.LogWarning("⚠️ Please fill in all fields");
+            registerErrorText.text = "השדות שם משתמש / סיסמא ריקים";
+            ErrorPanel.gameObject.SetActive(true);
+            Invoke(nameof(ClearRegisterErrorText), 5f);
             return;
         }
 
 #if UNITY_WEBGL
-    string storedPassword = await FirebaseWebGL.GetPasswordAsync(username);
-    if (string.IsNullOrEmpty(storedPassword))
-    {
-        Debug.LogWarning("⚠️ Username does not exist or error occurred");
-        return;
-    }
+        string storedPassword = await FirebaseWebGL.GetPasswordAsync(username);
+        if (string.IsNullOrEmpty(storedPassword))
+        {
+            Debug.LogWarning("⚠️ Username does not exist or error occurred");
+            registerErrorText.text = "טעות בשם משתמש";
+            ErrorPanel.gameObject.SetActive(true);
+            Invoke(nameof(ClearRegisterErrorText), 5f);
+            return;
+        }
 
-    if (storedPassword == password)
-    {
-        currentUsername = username;
-        Debug.Log($"✅ Login successful (WebGL): {username}");
-        loginPanel?.SetActive(false);
-        playButton?.gameObject.SetActive(true);
-        exitButton?.gameObject.SetActive(true);
-    }
-    else
-    {
-        Debug.LogWarning("⚠️ Incorrect password (WebGL)");
-    }
+        if (storedPassword == password)
+        {
+            currentUsername = username;
+            Debug.Log($"✅ Login successful (WebGL): {username}");
+            loginPanel?.SetActive(false);
+            playButton?.gameObject.SetActive(true);
+            exitButton?.gameObject.SetActive(true);
+            HelpPanel?.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ Incorrect password (WebGL)");
+            registerErrorText.text = "טעות בסיסמא";
+            registerErrorText.gameObject.SetActive(true);
+            Invoke(nameof(ClearRegisterErrorText), 5f);
+        }
 #else
         // קוד מקורי
 #endif
@@ -194,32 +212,42 @@ public class UserLoginManager : MonoBehaviour
         if (string.IsNullOrWhiteSpace(username))
         {
             registerErrorText.text = "הכנס משתמש";
-            registerErrorText.gameObject.SetActive(true);
+            ErrorPanel.gameObject.SetActive(true);
             Invoke(nameof(ClearRegisterErrorText), 5f);
             return;
         }
         if (string.IsNullOrWhiteSpace(password))
         {
-            registerErrorText.text = "הכנס סיסמה";
-            registerErrorText.gameObject.SetActive(true);
+            registerErrorText.text = "הכנס סיסמא";
+            ErrorPanel.gameObject.SetActive(true);
             Invoke(nameof(ClearRegisterErrorText), 5f);
             return;
         }
 
 #if UNITY_WEBGL
-    bool exists = await FirebaseWebGL.CheckUserExistsAsync(username);
-    if (exists)
-    {
-        registerErrorText.text = "משתמש קיים";
-        Invoke(nameof(ClearRegisterErrorText), 5f);
-        return;
-    }
+        bool exists = await FirebaseWebGL.CheckUserExistsAsync(username);
+        if (exists)
+        {
+            registerErrorText.text = "משתמש קיים";
+            ErrorPanel.gameObject.SetActive(true);
+            Invoke(nameof(ClearRegisterErrorText), 5f);
+            return;
+        }
 
-    bool success = await FirebaseWebGL.RegisterUserAsync(username, password);
-    if (success)
-        Debug.Log("✅ User registered successfully (WebGL)");
-    else
-        Debug.LogError("❌ Registration error (WebGL)");
+        bool success = await FirebaseWebGL.RegisterUserAsync(username, password);
+        if (success) { 
+    Debug.Log("✅ User registered successfully (WebGL)");
+        registerErrorText.text = "נרשמת בהצלחה!";
+        ErrorPanel.gameObject.SetActive(true);
+        Invoke(nameof(ClearRegisterErrorText), 5f);
+}
+        else
+        {
+            Debug.LogError("❌ Registration error (WebGL)");
+            registerErrorText.text = "הכנס משתמש";
+            ErrorPanel.gameObject.SetActive(true);
+            Invoke(nameof(ClearRegisterErrorText), 5f);
+        }
 #else
         // קוד מקורי
 #endif
@@ -288,13 +316,15 @@ public class UserLoginManager : MonoBehaviour
 
     void ClearForgotPasswordText()
     {
-        forgotPasswordText.text = "שכחתי סיסמה";
+        forgotPasswordText.text = "שכחתי סיסמא";
     }
 
     void ClearRegisterErrorText()
     {
-        registerErrorText.text = "הרשמה";
+        registerErrorText.text = "";
         registerErrorText.gameObject.SetActive(true);
+        ErrorPanel?.SetActive(false);
+
     }
 
     string ReverseDigits(string digits)
