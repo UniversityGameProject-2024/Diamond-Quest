@@ -12,6 +12,7 @@ public class RandomSpawner : MonoBehaviour
     public float screenVerticalPadding = 0.2f;
     public float destroyDiamondsIntervalInSeconds = 5;
     private Camera mainCamera;
+    public GameObject BigDiamondPanel;
     [Header("Stop Sign / Boss")]
     [SerializeField] public GameObject prefabBoss;
     [Tooltip("When boss appears")]
@@ -43,6 +44,7 @@ public class RandomSpawner : MonoBehaviour
     public IEnumerator ShowBigDiamond()
     {
         yield return new WaitForSeconds(1f);
+        BigDiamondPanel.SetActive(true);
         GameObject diamondPrefab = diamondPrefabs[Random.Range(0, diamondPrefabs.Length)];
         Vector3 centerScreenPosition = new Vector3(0.5f, 0.5f, 10f);
         Vector3 worldPosition = mainCamera.ViewportToWorldPoint(centerScreenPosition);
@@ -51,6 +53,7 @@ public class RandomSpawner : MonoBehaviour
         {
             yield return new WaitForSeconds(3.5f);
         }
+        BigDiamondPanel.SetActive(false);
         yield return new WaitForSeconds(1f);
         GameManager.Instance.SetGameLevelActive(true);
     }
