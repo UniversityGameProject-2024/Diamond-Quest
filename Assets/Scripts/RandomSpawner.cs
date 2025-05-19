@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using TMPro;
 
 public class RandomSpawner : MonoBehaviour
 {
@@ -16,6 +17,11 @@ public class RandomSpawner : MonoBehaviour
     [Tooltip("When boss appears")]
     [SerializeField] private float bossSpawnTime = 10;
     [SerializeField] private float bossDestroy = 5;
+    [SerializeField] private int bossBonusPoints = 20;
+    [SerializeField] private int bossMinusPoints = 5;
+    public GameObject SuccessPanel;  
+    public TMP_Text successText;
+    [SerializeField] private float SuccessPanelTimeScreen = 5;
     GameObject boss;
     [Header("Snake Settings")]
     public GameObject snakePrefab;
@@ -25,6 +31,8 @@ public class RandomSpawner : MonoBehaviour
 
     private void Start()
     {
+        if (SuccessPanel != null)
+            SuccessPanel.SetActive(false);
         mainCamera = Camera.main;
         //StartCoroutine(ShowBigDiamond());
         GameManager.Instance.SetGameLevelActive(false);
@@ -88,12 +96,25 @@ public class RandomSpawner : MonoBehaviour
         Destroy(boss);
         if (GameManager.Instance.WasDiamondSlicedWhenBossAskedToStop)
         {
-            GameManager.Instance.AddScore(-5);
+            SuccessPanel.SetActive(true);
+            successText.text = "לא נורא תנסה להתאפק פעם הבאה\n מינוס 5 נקודות ";
+            Invoke(nameof(ClearSuccessText), SuccessPanelTimeScreen);
+            GameManager.Instance.AddScore(-bossMinusPoints);
         }
         else
         {
-            GameManager.Instance.AddScore(20);
+            SuccessPanel.SetActive(true);
+            successText.text = "כל הכבוד ! קבל בונוס נקודות";
+            Invoke(nameof(ClearSuccessText), SuccessPanelTimeScreen);
+            GameManager.Instance.AddScore(bossBonusPoints);
         }
+    }
+    void ClearSuccessText()
+    {
+        successText.text = "";
+        successText.gameObject.SetActive(true);
+        SuccessPanel?.SetActive(false);
+
     }
     public void SpawnRandomDiamond()
     {
