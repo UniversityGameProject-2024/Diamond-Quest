@@ -11,6 +11,10 @@ public class TutorialManager : MonoBehaviour
     [Header("Prefab Settings")]
     public GameObject[] diamondPrefabs;
 
+    [Header("Timer UI")]
+    [SerializeField] private TMPro.TMP_Text timerText;
+    public GameObject timerPanel;
+
     [Header("Tutorial UI")]
     public GameObject tutorialPanel;
     public TMP_Text tutorialText;
@@ -40,6 +44,8 @@ public class TutorialManager : MonoBehaviour
     private bool bigDiamondExits = false;
 
     [SerializeField] private float gameDuration = 300f;
+    private float remainingTime;
+    private bool timerRunning = false;
 
     private string[] tutorialSteps = new string[]
     {
@@ -65,14 +71,34 @@ public class TutorialManager : MonoBehaviour
         if (loginManager == null)
             Debug.LogError("❌ לא נמצא UserLoginManager – שמירת ניקוד תיכשל!");
 
+        if (timerText != null)
+        {
+            timerPanel.SetActive(false);
+            timerText.gameObject.SetActive(false);
+        }
+
         StartTutorial();
     }
 
     private void Update()
     {
+        if (timerRunning)
+        {
+            remainingTime -= Time.deltaTime;
+            if (remainingTime <= 0f)
+            {
+                remainingTime = 0f;
+                timerRunning = false;
+            }
+            if (timerText != null)
+                timerText.text = FormatTime(remainingTime);
+        }
+
+        // הקוד המקורי שלך ל־nextButton…
         if (diamondTutorial == null)
             nextButton.GetComponent<Button>().interactable = true;
     }
+
 
     public void StartTutorial()
     {
@@ -194,6 +220,18 @@ public class TutorialManager : MonoBehaviour
         GameManager.Instance.SetTutorialActive(false);
         GameManager.Instance.SetGameActive(true);
         GameManager.Instance.SetGameLevelActive(false);
+
+        // להפעיל טיימר
+        remainingTime = gameDuration;
+        if (timerText != null)
+        {
+            timerPanel.SetActive(true);
+            timerText.gameObject.SetActive(true);
+            timerText.text = FormatTime(remainingTime);
+        }
+        timerRunning = true;
+
+
         Invoke("EndGame", gameDuration);
 
         GameManager.Instance.SetScore(0);
@@ -303,6 +341,12 @@ public class TutorialManager : MonoBehaviour
     // מעבר לתפריט הראשי לאחר 2 שניות
     Invoke("LoadMainMenu", 5f);
 }
+    private string FormatTime(float time)
+    {
+        int minutes = Mathf.FloorToInt(time / 60f);
+        int seconds = Mathf.FloorToInt(time % 60f);
+        return $"{minutes:00}:{seconds:00}";
+    }
 
 
 }
