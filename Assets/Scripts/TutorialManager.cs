@@ -15,6 +15,19 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private TMPro.TMP_Text timerText;
     public GameObject timerPanel;
 
+    [Header("Boss Prefab")]
+    public GameObject bossPrefab;            // Prefab with animation
+    [Tooltip("Adjust the scale of the boss instance when spawned")]
+    public Vector3 bossScale = Vector3.one;  // New: boss display size
+    [Tooltip("Adjust Y offset of boss spawn position")]
+    public float bossYOffset = 0f;           // Vertical offset for boss
+    private GameObject bossInstance;        // Reference to spawned boss
+
+    [Header("Image Settings")]
+    [Tooltip("Drag the UI Image GameObject (panel) to show in step 4")]
+    public GameObject imageObject;
+    [SerializeField] private Sprite[] tutorialSprites; // Sprites matching each tutorial step
+
     [Header("Tutorial UI")]
     public GameObject tutorialPanel;
     public TMP_Text tutorialText;
@@ -50,7 +63,10 @@ public class TutorialManager : MonoBehaviour
     private string[] tutorialSteps = new string[]
     {
         "היהלומים שיופיעו במהלך המשחק.",
-        "צבע הילום שצריך לזכור",
+        "בתחילת המשחק ובכל פעם שתצבור 5 נקודות יופיע על המסך יהלום בצבע חדש. היהלום יופיע למשך 3 שניות ואז יעלם.\nעליך לתפוס יהלומים רק בצבע שהופיע.\nלדוגמא: כאן בתמונה יש לתפוס רק את היהלומים הכחולים",
+        "אם שכחת את צבע היהלום שצריך לתפוס, אחרי 5 טעויות רצופות תופיע על המסך תזכורת.",
+        "הבוס שלך, מר דין, יגיד לך מתי להפסיק לאסוף יהלומים. כאשר הוא ירים את ידו - עצור וכאשר הוא יוריד אותה - המשך",
+        "אל תשכח שבמכרות המסוכנים יש הסחות דעת. אל תיתן להם להסיט אותך מהמטרה",
         "בשלב הבא המשחק מתחיל, בהצלחה!"
     };
 
@@ -142,6 +158,20 @@ public class TutorialManager : MonoBehaviour
         bigDiamondInstance.transform.localScale = new Vector3(3f, 3f, 3f);
     }
 
+    private void SpawnBoss()
+    {
+        if (bossPrefab == null)
+        {
+            Debug.LogWarning("⚠️ Boss Prefab לא הוגדר ב־Inspector");
+            return;
+        }
+        Vector3 spawnPos = mainCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 10f));
+        spawnPos.y += bossYOffset; 
+        bossInstance = Instantiate(bossPrefab, spawnPos, Quaternion.identity);
+        bossInstance.transform.localScale = bossScale;
+    }
+
+
     public void NextStep()
     {
         if (tutorialFinished) return;
@@ -158,22 +188,49 @@ public class TutorialManager : MonoBehaviour
         if (stepIndex == 1)
             SpawnAllDiamonds();
 
+        Image img = imageObject.GetComponent<Image>();
+
         if (stepIndex == 2)
         {
             foreach (GameObject diamond in spawnedDiamonds)
                 Destroy(diamond);
-            SpawnBigDaimonds();
+
+            if (img != null && tutorialSprites != null && tutorialSprites.Length > 0)
+                img.sprite = tutorialSprites[0];
+            imageObject.SetActive(true);
         }
 
         if (stepIndex == 3)
         {
-            if (bigDiamondInstance != null)
-                Destroy(bigDiamondInstance);
+            if (img != null && tutorialSprites != null && tutorialSprites.Length > 0)
+                img.sprite = tutorialSprites[1];
+        }
+
+        if (stepIndex == 4)
+        {
+            if (imageObject != null)
+                imageObject.SetActive(false);
+            SpawnBoss();
+        }
+
+        if (stepIndex == 5)
+        {
+            if (bossInstance != null)
+                Destroy(bossInstance);
+            if (img != null && tutorialSprites != null && tutorialSprites.Length > 0)
+                img.sprite = tutorialSprites[2];
+            imageObject.SetActive(true);
+        }
+
+        if (stepIndex == 6)
+        {
+            if (imageObject != null)
+                imageObject.SetActive(false);
             Invoke("DeleteTutorialText", 5f);
             StartCoroutine(SpawnDiamonds());
         }
 
-        if (stepIndex == 4)
+        if (stepIndex == 7)
         {
             foreach (GameObject d in GameObject.FindGameObjectsWithTag("Small Diamond"))
                 Destroy(d);
@@ -203,6 +260,11 @@ public class TutorialManager : MonoBehaviour
     {
         tutorialText.text = tutorialSteps[stepIndex - 1];
     }
+
+    //private void UpdateTutorialImage()
+    //{
+    //    tutorialText.text = tutorialSteps[stepIndex - 1];
+    //}
 
     public void SetTextScore(int score)
     {
