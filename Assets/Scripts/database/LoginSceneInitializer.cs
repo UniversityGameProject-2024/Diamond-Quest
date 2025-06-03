@@ -14,7 +14,7 @@ public class LoginSceneInitializer : MonoBehaviour
     public Button registerButton;
     public GameObject loginPanel;
     public Button playButton;
-    public Button exitButton;
+    //public Button exitButton;
     public Button forgotPasswordButton;
     public GameObject ErrorPanel;
     public GameObject HelpPanel;
@@ -34,7 +34,6 @@ public class LoginSceneInitializer : MonoBehaviour
                 registerButton,
                 loginPanel,
                 playButton,
-                exitButton,
                 registerErrorText,
                 HelpPanel,
                 ErrorPanel

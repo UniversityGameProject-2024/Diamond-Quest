@@ -1687,7 +1687,7 @@ MonoBehaviour:
   m_text: "\u05DC\u05E9\u05D7\u05E7"
   m_isRightToLeft: 1
   m_fontAsset: {fileID: 11400000, guid: 66b31bda6414e964ca7d6a793609e82a, type: 2}
-  m_sharedMaterial: {fileID: 0}
+  m_sharedMaterial: {fileID: -2673541851043351573, guid: 66b31bda6414e964ca7d6a793609e82a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1752,7 +1752,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &982391864
@@ -2370,7 +2370,6 @@ MonoBehaviour:
   registerButton: {fileID: 1531955856}
   loginPanel: {fileID: 1586763191}
   playButton: {fileID: 1881766425}
-  exitButton: {fileID: 603098196}
   forgotPasswordButton: {fileID: 123424918}
   ErrorPanel: {fileID: 387092613}
   HelpPanel: {fileID: 790882453}
@@ -2665,7 +2664,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "\u200B"
-  m_isRightToLeft: 0
+  m_isRightToLeft: 1
   m_fontAsset: {fileID: 11400000, guid: 66b31bda6414e964ca7d6a793609e82a, type: 2}
   m_sharedMaterial: {fileID: -2673541851043351573, guid: 66b31bda6414e964ca7d6a793609e82a, type: 2}
   m_fontSharedMaterials: []
@@ -3791,7 +3790,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 250}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1881766425

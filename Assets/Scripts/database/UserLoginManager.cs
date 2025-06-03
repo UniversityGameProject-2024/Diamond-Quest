@@ -45,7 +45,6 @@ public class UserLoginManager : MonoBehaviour
         Button registerButton,
         GameObject loginPanel,
         Button playButton,
-        Button exitButton,
         TMP_Text registerErrorText,
         GameObject HelpPanel,
         GameObject ErrorPanel)
@@ -59,7 +58,7 @@ public class UserLoginManager : MonoBehaviour
         this.registerButton = registerButton;
         this.loginPanel = loginPanel;
         this.playButton = playButton;
-        this.exitButton = exitButton;
+        //this.exitButton = exitButton;
         this.HelpPanel = HelpPanel;
         this.ErrorPanel = ErrorPanel;
 
@@ -182,6 +181,7 @@ public class UserLoginManager : MonoBehaviour
         {
             Debug.LogWarning("⚠️ Incorrect password (WebGL)");
             registerErrorText.text = "טעות בסיסמא";
+            ErrorPanel.gameObject.SetActive(true);
             registerErrorText.gameObject.SetActive(true);
             Invoke(nameof(ClearRegisterErrorText), 5f);
         }
@@ -264,6 +264,13 @@ public class UserLoginManager : MonoBehaviour
 
         string timestamp = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
+        float rawElapsed = 0f;
+        if (TutorialManager.Instance != null)
+        {
+            rawElapsed = TutorialManager.Instance.ElapsedTime;
+        }
+        int elapsedSeconds = Mathf.FloorToInt(rawElapsed) + 1;
+
         var scoreData = new Dictionary<string, object>
     {
         { "score", score },
@@ -271,7 +278,8 @@ public class UserLoginManager : MonoBehaviour
         { "badDiamondsCut", badCut },
         { "spawnedGoodDiamonds", spawnedGood },
         { "cutWhenBossNotAllowed", bossCut },
-        { "timestamp", timestamp }
+        { "timestamp", timestamp },
+        { "howLongPlayedInSeconds", elapsedSeconds }
     };
 
         await FirebaseWebGL.SaveScoreAsync(currentUsername, scoreData);

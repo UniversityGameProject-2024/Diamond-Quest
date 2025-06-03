@@ -23,6 +23,10 @@ public class Blade : MonoBehaviour
             Debug.Log("❌ GameManager.Instance is NULL in Blade.cs!");
             return;
         }
+        if (Time.timeScale == 0f)
+        {
+            return;
+        }
         if (!GameManager.Instance.IsGameActive && !GameManager.Instance.IsTutorialActive)
         {
             return;

@@ -225,6 +225,12 @@ public class TutorialManager : MonoBehaviour
 
         if (stepIndex == 6)
         {
+            if (skipButton != null)
+                skipButton.SetActive(false);
+            TMP_Text btnText = nextButton.GetComponentInChildren<TMP_Text>();
+            if (btnText != null)
+                btnText.text = "התתחל משחק";
+
             if (imageObject != null)
                 imageObject.SetActive(false);
             Invoke("DeleteTutorialText", 5f);
@@ -266,7 +272,14 @@ public class TutorialManager : MonoBehaviour
     //{
     //    tutorialText.text = tutorialSteps[stepIndex - 1];
     //}
-
+    public float ElapsedTime
+    {
+        get
+        {
+            // gameDuration - remainingTime = הזמן שעבר מאז תחילת הספירה
+            return Mathf.Clamp(gameDuration - remainingTime, 0f, gameDuration);
+        }
+    }
     public void SetTextScore(int score)
     {
         textScore.text = $"Score: {score}";
