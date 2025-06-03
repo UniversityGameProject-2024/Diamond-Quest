@@ -41,9 +41,42 @@ public class RandomSpawner : MonoBehaviour
         StartCoroutine(SpawnBoss());
         StartCoroutine(SpawnSnakes());
     }
+    //public IEnumerator ShowBigDiamond()
+    //{
+    //    yield return new WaitForSeconds(1f);
+    //    BigDiamondPanel.SetActive(true);
+    //    GameObject diamondPrefab = diamondPrefabs[Random.Range(0, diamondPrefabs.Length)];
+    //    Vector3 centerScreenPosition = new Vector3(0.5f, 0.5f, 10f);
+    //    Vector3 worldPosition = mainCamera.ViewportToWorldPoint(centerScreenPosition);
+    //    BigDiamond bigDiamond = BigDiamond.Create(diamondPrefab, worldPosition);
+    //    if (bigDiamond != null)
+    //    {
+    //        yield return new WaitForSeconds(3.5f);
+    //    }
+    //    BigDiamondPanel.SetActive(false);
+    //    yield return new WaitForSeconds(1f);
+    //    GameManager.Instance.SetGameLevelActive(true);
+    //}
+    // RandomSpawner.cs
+
     public IEnumerator ShowBigDiamond()
     {
+        // ========= **הוספה #1: עצירת שלב המשחק (שוב, כדי לוודא ש־SpawnDiamonds לא יופעלו) =========
+        GameManager.Instance.SetGameLevelActive(false);
+
+        //// ========= **הוספה #2: הצגת הטקסט "זכור את היהלום הזה" באמצעות ReminderPanel של GameManager =========
+        //if (GameManager.Instance.reminderPanel != null && GameManager.Instance.reminderText != null)
+        //{
+        //    GameManager.Instance.reminderText.text = "זכור את היהלום הזה!";
+        //    GameManager.Instance.reminderPanel.SetActive(true);
+        //}
+
+        // ========= **הוספה #3: אפשר לתת קצת זמן כדי שהטקסט יתנוסס לפני הופעת היהלום =========
+        yield return new WaitForSeconds(0.5f);
+
+        // ========= **קוד קיים** =========
         yield return new WaitForSeconds(1f);
+
         BigDiamondPanel.SetActive(true);
         GameObject diamondPrefab = diamondPrefabs[Random.Range(0, diamondPrefabs.Length)];
         Vector3 centerScreenPosition = new Vector3(0.5f, 0.5f, 10f);
@@ -54,9 +87,20 @@ public class RandomSpawner : MonoBehaviour
             yield return new WaitForSeconds(3.5f);
         }
         BigDiamondPanel.SetActive(false);
+
+        // ========= **הוספה #4: הסתרת ה־ReminderPanel בסוף ההמתנה של יהלום גדול =========
+        if (GameManager.Instance.reminderPanel != null)
+        {
+            GameManager.Instance.reminderPanel.SetActive(false);
+        }
+
+        // ========= **הוספה #5: זמן קצר לפני הפעלת השלב החדש (אין טקסט, כבר סגרנו אותו) =========
         yield return new WaitForSeconds(1f);
+
+        // ========= **הקוד הקיים** =========
         GameManager.Instance.SetGameLevelActive(true);
     }
+
     private IEnumerator SpawnDiamonds()
     {
         int countSpawnedDiamonds = 0;
