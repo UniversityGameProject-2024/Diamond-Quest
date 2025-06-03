@@ -60,6 +60,7 @@ public class TutorialManager : MonoBehaviour
     private float remainingTime;
     private bool timerRunning = false;
 
+
     private string[] tutorialSteps = new string[]
     {
         "היהלומים שיופיעו במהלך המשחק.",
@@ -292,8 +293,6 @@ public class TutorialManager : MonoBehaviour
             timerText.text = FormatTime(remainingTime);
         }
         timerRunning = true;
-
-
         Invoke("EndGame", gameDuration);
 
         GameManager.Instance.SetScore(0);
@@ -309,6 +308,11 @@ public class TutorialManager : MonoBehaviour
 
         if (backToMenuButton != null)
             backToMenuButton.gameObject.SetActive(true);
+
+        if (PauseMenuController.Instance != null)
+        {
+            PauseMenuController.Instance.EnablePauseButton();
+        }
     }
 
     public void LoadMainMenu()
@@ -410,5 +414,14 @@ public class TutorialManager : MonoBehaviour
         return $"{minutes:00}:{seconds:00}";
     }
 
+    public void PauseTimer()
+    {
+        timerRunning = false;
+    }
+
+    public void ResumeTimer()
+    {
+        timerRunning = true;
+    }
 
 }
